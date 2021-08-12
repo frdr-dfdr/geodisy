@@ -45,6 +45,7 @@ public class DVFieldNameStrings {
     public final static String TITLE = "title";
     public final static String SUBTITLE = "subtitle";
     public final static String LAST_MOD_DATE = "lastUpdateTime";
+    public final static String NEW_OR_NEW_FILES = "files_altered";
 
     //Terms of Use and Access______________________________________________________________________
     public final static String LICENSE = "license";
