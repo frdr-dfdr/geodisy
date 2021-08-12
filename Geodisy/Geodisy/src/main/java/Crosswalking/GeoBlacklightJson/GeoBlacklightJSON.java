@@ -9,8 +9,10 @@ import Dataverse.DataverseRecordFile;
 import Dataverse.SourceRecordFiles;
 import _Strings.GeodisyStrings;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.io.File;
+import java.io.InputStream;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -56,6 +58,32 @@ public abstract class GeoBlacklightJSON extends JSONCreator implements MetadataS
         }
     }
 
+    public void updateJSONs(){
+        String base = GeodisyStrings.replaceSlashes(GeodisyStrings.removeHTTPSAndReplaceAuthority(doi));
+        File file = new File(base);
+        File[] files = file.listFiles();
+        for(File f: files){
+            if(f.getName().equals("geoblacklight.json"))
+                updateJSON(f);
+            else if(f.isDirectory())
+                updateJSON(f.listFiles()[0]);
+        }
+    }
+    protected void updateJSON(File file){
+        InputStream is = GeoBlacklightJSON.class.getResourceAsStream(file.getAbsolutePath());
+        if (is == null) {
+            throw new NullPointerException("Cannot find resource file " + is);
+        }
+
+        JSONTokener tokener = new JSONTokener(is);
+        jo = new JSONObject(tokener);
+        updateRequiredFields();
+        updateOptionalFields();
+        geoBlacklightJson = jo.toString();
+        saveJSONToFile(geoBlacklightJson, doi, file.getAbsolutePath());
+
+    }
+
     private void createJSONFromFiles(DataverseRecordFile drf, int total) {
         boolean single = total == 1;
         getRequiredFields(drf.getGBB(), total, drf.getBbCount());
@@ -88,5 +116,7 @@ public abstract class GeoBlacklightJSON extends JSONCreator implements MetadataS
     protected abstract JSONObject addDataDownloadOptions(GeographicBoundingBox bb, JSONObject ja, boolean isOnGeoserver); //for records with datasetfiles
     protected abstract JSONObject addBaseRecordInfo(); //adds the base metadata external services that all records need regardless of existence of datafiles
     protected abstract void saveJSONToFile(String json, String doi, String folderName);
+    protected abstract JSONObject updateOptionalFields();
+    protected abstract JSONObject updateRequiredFields();
 
 }

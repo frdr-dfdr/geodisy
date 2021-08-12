@@ -69,6 +69,25 @@ public class DataGBJSON extends GeoBlacklightJSON{
         return jo;
     }
 
+    @Override
+    protected JSONObject updateRequiredFields() {
+        jo.put("dc_identifier_s", GeodisyStrings.urlSlashes(javaObject.getSimpleFieldVal(DVFieldNameStrings.RECORD_URL)));
+        String origTitle = jo.getString("dc_title_s");
+        String name = javaObject.getSimpleFields().getField(TITLE);
+        if(origTitle.contains("(") &&  origTitle.contains(" of ") && (origTitle.lastIndexOf("(")>origTitle.lastIndexOf(" of "))){
+            jo.put("dc_title_s", name + origTitle.substring(origTitle.lastIndexOf(" (")));
+        } else
+            jo.put("dc_title_s", name);
+        String license = javaObject.getSimpleFields().getField(LICENSE);
+        if(license.toLowerCase().equals("public")||license.isEmpty())
+            jo.put("dc_rights_s","Public");
+        else
+            jo.put("dc_rights_s","Restricted");
+        jo.put("dct_provenance_s",javaObject.getSimpleFields().getField(PUBLISHER));
+        jo.put("dc_publisher_s",javaObject.getSimpleFields().getField(PUBLISHER));
+        return jo;
+    }
+
     private String padZeros(String number, int total) {
         if(total>9) {
             if(number.length()<2)
@@ -103,6 +122,10 @@ public class DataGBJSON extends GeoBlacklightJSON{
         jo.put(EXTERNAL_SERVICES, j.toString());
         if(!geoserverLabel.isEmpty())
             jo.put("layer_id_s", geoserverLabel);
+    }
+
+    private void updateRecommendedFields(){
+        getDSDescriptionSingle();
     }
 
     private String getGeoserverLabel(GeographicBoundingBox gbb) {
@@ -166,6 +189,21 @@ public class DataGBJSON extends GeoBlacklightJSON{
         getSubjects();
         getType();
         getRelatedRecords(drf);
+        getModifiedDate();
+        getSolrYear();
+        getTemporalRange();
+
+        return jo;
+    }
+
+    @Override
+    protected JSONObject updateOptionalFields(){
+        updateRecommendedFields();
+        getAuthors();
+        getIssueDate();
+        getLanguages();
+        getSubjects();
+        getType();
         getModifiedDate();
         getSolrYear();
         getTemporalRange();

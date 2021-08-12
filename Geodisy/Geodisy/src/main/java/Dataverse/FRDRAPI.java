@@ -53,7 +53,7 @@ public class FRDRAPI extends SourceAPI{
                     System.out.println("#" + counter + " ID = " + djo.getPID());
                     if (djo.hasGeoGraphicCoverage())
                         djo = (DataverseJavaObject) getBBFromGeonames(djo);
-                    if (djo.hasContent && !testing) {
+                    if (djo.hasContent && djo.isNewOrHasNewFiles() && !testing) {
                         System.out.println("Downloading record: " + djo.getPID());
                         long startTime = Calendar.getInstance().getTimeInMillis();
                         if(!dontProcessSpecificRecords(djo.getPID())) {
