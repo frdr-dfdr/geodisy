@@ -65,8 +65,19 @@ public class DataGBJSON extends GeoBlacklightJSON{
             jo.put("dc_rights_s","Restricted");
         jo.put("dct_provenance_s",javaObject.getSimpleFields().getField(PUBLISHER));
         jo.put("dc_publisher_s",javaObject.getSimpleFields().getField(PUBLISHER));
-        jo.put("solr_geom","ENVELOPE(" + getBBString(gbb.getBB()) + ")");
+        jo.put("solr_geom",determineGeomentry(gbb.getBB()));
         return jo;
+    }
+
+    private String determineGeomentry(BoundingBox bb) {
+        if(bb.getLongWest()>bb.getLongEast())
+            return "ENVELOPE(" + getBBString(bb) + ")";
+        else
+            return "MULTIPOLYGON(((" + addPolygon(bb.getLongWest(),180d,bb.getLatNorth(),bb.getLatSouth()) + ")), ((" + addPolygon(-180d, bb.getLongEast(), bb.getLatNorth(), bb.getLatSouth()) + ")))";
+    }
+
+    private String addPolygon(double west, double east, double north, double south) {
+        return west + " " + south + ", " + west + " " + north + ", " + east + " " + north + ", " + east + " " + south + ", " + west + " " + south;
     }
 
     @Override
