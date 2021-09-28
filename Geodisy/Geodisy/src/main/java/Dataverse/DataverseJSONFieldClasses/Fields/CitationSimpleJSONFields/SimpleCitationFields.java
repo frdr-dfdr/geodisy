@@ -421,7 +421,7 @@ public class SimpleCitationFields extends JSONField {
     }
 
     public void setNewOrNewFiles(String val){
-        if(val=="0")
+        if(val.equals("0"))
             this.newOrNewFiles = false;
         else
             this.newOrNewFiles = true;
