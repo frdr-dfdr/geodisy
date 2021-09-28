@@ -70,7 +70,7 @@ public class DataGBJSON extends GeoBlacklightJSON{
     }
 
     private String determineGeomentry(BoundingBox bb) {
-        if(bb.getLongWest()>bb.getLongEast())
+        if(bb.getLongWest()<bb.getLongEast())
             return "ENVELOPE(" + getBBString(bb) + ")";
         else
             return "MULTIPOLYGON(((" + addPolygon(bb.getLongWest(),180d,bb.getLatNorth(),bb.getLatSouth()) + ")), ((" + addPolygon(-180d, bb.getLongEast(), bb.getLatNorth(), bb.getLatSouth()) + ")))";
