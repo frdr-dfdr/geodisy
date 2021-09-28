@@ -19,7 +19,7 @@ public class GeoCombine {
     public void index(){
 
         moveMetadata();
-        clearSolr();
+        //clearSolr();
         combine();
     }
     public void combine(){

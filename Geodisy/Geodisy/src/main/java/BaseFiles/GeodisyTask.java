@@ -62,14 +62,14 @@ public class GeodisyTask {
             //deleteEmptyFolders();
 
             //TODO Uncomment sendRecordsToGeoBlacklight() once harvesting of FRDR has been approved on Prod
-            /*if(!IS_WINDOWS) {
+            if(!IS_WINDOWS) {
                 sendRecordsToGeoBlacklight();
-                *//*We are no longer updating Open Geo Metadata records due to sparely populated metadata files
-                if(!TEST) {
+                //We are no longer updating Open Geo Metadata records due to sparely populated metadata files
+                /*if(!TEST) {
                     JGit jgit = new JGit();
                     jgit.updateRemoteMetadata();
-                }*//*
-            }*/
+                }*/
+            }
              
             /**
              *
