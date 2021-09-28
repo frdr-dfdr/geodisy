@@ -170,6 +170,7 @@ public class SimpleCitationFields extends JSONField {
                 break;
             case NEW_OR_NEW_FILES:
                 setNewOrNewFiles(value);
+                break;
             default:
                 setTermsAndAccField(label,value);
         }
