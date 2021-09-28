@@ -25,6 +25,8 @@ public class ExistingCallsToCheck extends ExistingSearches implements Serializab
     private ExistingCallsToCheck(){
         records = readExistingRecords(EXISTING_CHECKS);
         newRecords = new HashMap<>();
+        if(records==null)
+            records = new HashMap<>();
 
     }
     public boolean isEmpty(){

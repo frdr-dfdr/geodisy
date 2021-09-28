@@ -83,6 +83,8 @@ public class ExistingGeoLabelsVals extends ExistingSearches implements Serializa
         FileWriter fw = new FileWriter();
         try {
             lastRasterAndVectorIDs =  (int[]) fw.readSavedObject(GeodisyStrings.replaceSlashes(EXISTING_GEO_LABELS_VALS));
+            if(lastRasterAndVectorIDs==null)
+                lastRasterAndVectorIDs = newVals;
         } catch (IOException e) {
             getLogger().error("Something went wrong reading the Existing GeoLabels file");
             lastRasterAndVectorIDs = newVals;
