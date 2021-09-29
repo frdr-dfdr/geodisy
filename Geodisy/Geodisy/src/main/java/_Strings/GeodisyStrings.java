@@ -407,6 +407,7 @@ public class GeodisyStrings {
                 ,{"opendatakingston.cityofkingston.ca/explore/dataset/","kingston"}             //172
                 ,{"donnees.montreal.ca/dataset/", "montreal"}                                   //173
                 ,{"data.montreal.ca/dataset/", "montreal"}                                   //173
+                ,{"open.ottawa.ca/dataset/", "ottawa"}
 
 
 

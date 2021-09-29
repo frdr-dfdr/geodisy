@@ -5,14 +5,13 @@ package BaseFiles;
  * and open the template in the editor.
  */
 
-import Crosswalking.GeoBlacklightJson.GeoCombine;
-import TestFiles.Tests;
 import _Strings.GeodisyStrings;
+import static _Strings.GeodisyStrings.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static _Strings.GeodisyStrings.*;
+
 
 /**
  *
@@ -33,6 +32,7 @@ public class Main {
             TEST = true;
         else
             TEST = false;
+        TEST = true;
         if(TEST)
             dev = "Using the dev servers, is this correct?";
         else
