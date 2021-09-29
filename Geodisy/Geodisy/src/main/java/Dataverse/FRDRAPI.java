@@ -40,10 +40,10 @@ public class FRDRAPI extends SourceAPI{
         // Repeatedly call the FRDR Harvester Export function until getting a json with finished: True
         while(!done) {
             String fullJSON;
-            if(!testing)
+            //if(!testing)
                 fullJSON = getJson();
-            else
-                fullJSON = "{\"records\": ["+ TestStrings.doiJson + "], \"finished\": true}";
+            /*else
+                fullJSON = "{\"records\": ["+ TestStrings.doiJson + "], \"finished\": true}";*/
             if(fullJSON.isEmpty())
                 break;
             try {
@@ -57,7 +57,10 @@ public class FRDRAPI extends SourceAPI{
                     DataverseJavaObject djo = parser.frdrParse(jo);
                     System.out.println("#" + counter + " ID = " + djo.getPID());
                     if (djo.hasGeoGraphicCoverage())
-                        djo = (DataverseJavaObject) getBBFromGeonames(djo);if (djo.hasContent) {
+                        djo = (DataverseJavaObject) getBBFromGeonames(djo);
+                    if (djo.hasContent && djo.isNewOrHasNewFiles() && !testing) {
+                        System.out.println("Downloading record: " + djo.getPID());
+                        long startTime = Calendar.getInstance().getTimeInMillis();
                         if(!dontProcessSpecificRecords(djo.getPID())) {
                             if(!testing) {
                                 System.out.println("Downloading record: " + djo.getPID());

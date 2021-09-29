@@ -67,7 +67,38 @@ public class DataGBJSON extends GeoBlacklightJSON{
             jo.put("dc_rights_s","Restricted");
         jo.put("dct_provenance_s",javaObject.getSimpleFields().getField(PUBLISHER));
         jo.put("dc_publisher_s",javaObject.getSimpleFields().getField(PUBLISHER));
-        jo.put("solr_geom","ENVELOPE(" + getBBString(gbb.getBB()) + ")");
+        jo.put("solr_geom",determineGeomentry(gbb.getBB()));
+        return jo;
+    }
+
+    private String determineGeomentry(BoundingBox bb) {
+        //TODO Uncomment when GBL is ready for MULTIPOLYGONS
+        //if(bb.getLongWest()<bb.getLongEast())
+            return "ENVELOPE(" + getBBString(bb) + ")";
+        /*else
+            return "MULTIPOLYGON(((" + addPolygon(bb.getLongWest(),180d,bb.getLatNorth(),bb.getLatSouth()) + ")), ((" + addPolygon(-180d, bb.getLongEast(), bb.getLatNorth(), bb.getLatSouth()) + ")))";*/
+    }
+
+    private String addPolygon(double west, double east, double north, double south) {
+        return west + " " + south + ", " + west + " " + north + ", " + east + " " + north + ", " + east + " " + south + ", " + west + " " + south;
+    }
+
+    @Override
+    protected JSONObject updateRequiredFields() {
+        jo.put("dc_identifier_s", GeodisyStrings.urlSlashes(javaObject.getSimpleFieldVal(DVFieldNameStrings.RECORD_URL)));
+        String origTitle = jo.getString("dc_title_s");
+        String name = javaObject.getSimpleFields().getField(TITLE);
+        if(origTitle.contains("(") &&  origTitle.contains(" of ") && (origTitle.lastIndexOf("(")>origTitle.lastIndexOf(" of "))){
+            jo.put("dc_title_s", name + origTitle.substring(origTitle.lastIndexOf(" (")));
+        } else
+            jo.put("dc_title_s", name);
+        String license = javaObject.getSimpleFields().getField(LICENSE);
+        if(license.toLowerCase().equals("public")||license.isEmpty())
+            jo.put("dc_rights_s","Public");
+        else
+            jo.put("dc_rights_s","Restricted");
+        jo.put("dct_provenance_s",javaObject.getSimpleFields().getField(PUBLISHER));
+        jo.put("dc_publisher_s",javaObject.getSimpleFields().getField(PUBLISHER));
         return jo;
     }
     private String padZeros(int number, int total){
@@ -110,6 +141,10 @@ public class DataGBJSON extends GeoBlacklightJSON{
                 jo.put("layer_id_s", geoserverLabel+padZeros(count, total));
             else
                 jo.put("layer_id_s", geoserverLabel);
+    }
+
+    private void updateRecommendedFields(){
+        getDSDescriptionSingle();
     }
 
     private String getGeoserverLabel(GeographicBoundingBox gbb) {
@@ -173,6 +208,21 @@ public class DataGBJSON extends GeoBlacklightJSON{
         getSubjects();
         getType();
         getRelatedRecords(drf, totalRecordsInStudy);
+        getModifiedDate();
+        getSolrYear();
+        getTemporalRange();
+
+        return jo;
+    }
+
+    @Override
+    protected JSONObject updateOptionalFields(){
+        updateRecommendedFields();
+        getAuthors();
+        getIssueDate();
+        getLanguages();
+        getSubjects();
+        getType();
         getModifiedDate();
         getSolrYear();
         getTemporalRange();

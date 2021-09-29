@@ -185,5 +185,11 @@ BLDemo/
 Dryad/
 
 logs/output2.txt
+target
+*~
+.classpath
+.factorypath
+.project
+.settings/
 
 .idea/

@@ -421,4 +421,8 @@ public class DataverseJavaObject extends SourceJavaObject {
     public void updateRecordFileNumbers() {
         updateRecordFileNumbers(logger);
     }
+
+    public boolean isNewOrHasNewFiles(){
+        return citationFields.isNewOrHasNewFiles();
+    }
 }

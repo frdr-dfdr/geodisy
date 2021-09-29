@@ -29,7 +29,6 @@ public class ExistingDatasetBBoxes extends ExistingSearches implements Serializa
     }
 
     private ExistingDatasetBBoxes(){
-        logger = new GeoLogger(this.getClass());
         bBoxes = readExistingBoundingBoxes();
         if(bBoxes==null)
             bBoxes = new HashMap<>();
@@ -63,7 +62,7 @@ public class ExistingDatasetBBoxes extends ExistingSearches implements Serializa
         try {
             fw.writeObjectToFile(bBoxes,TEST_EXISTING_BBOXES);
         } catch (IOException e) {
-            logger.error("Something went wrong saving existing bboxes");
+            getLogger().error("Something went wrong saving existing bboxes");
         }
     }
 
@@ -73,10 +72,10 @@ public class ExistingDatasetBBoxes extends ExistingSearches implements Serializa
         try {
             return  (HashMap<String, BoundingBox>) fw.readSavedObject(GeodisyStrings.replaceSlashes(EXISTING_DATASET_BBOXES));
         } catch (IOException e) {
-            logger.error("Something went wrong reading the Existing bBoxes file");
+            getLogger().error("Something went wrong reading the Existing bBoxes file");
             return newFile;
         } catch (ClassNotFoundException e) {
-            logger.error("Something went wrong parsing the Existing BBoxes file");
+            getLogger().error("Something went wrong parsing the Existing BBoxes file");
             return newFile;
         }catch (NullPointerException e){
             return newFile;
@@ -91,6 +90,14 @@ public class ExistingDatasetBBoxes extends ExistingSearches implements Serializa
 
     public void setbBoxes(HashMap<String, BoundingBox> bboxes){
         bBoxes = bboxes;
+    }
+
+    @Override
+    protected GeoLogger getLogger() {
+        if (logger == null) {
+            logger = new GeoLogger(this.getClass());
+        }
+        return logger;
     }
 
 }

@@ -57,7 +57,10 @@ public abstract class SourceAPI implements API {
     protected void crosswalkSJOsToGeoBlackJSON(SourceJavaObject sJO) {
         DataverseJavaObject djo = (DataverseJavaObject) sJO;
         DataGBJSON dataGBJSON = new DataGBJSON(djo);
-        dataGBJSON.createJson();
+        if(djo.isNewOrHasNewFiles())
+            dataGBJSON.createJson();
+        else
+            dataGBJSON.updateJSONs();
     }
 
     /**

@@ -15,6 +15,7 @@ public class SimpleCitationFields extends JSONField {
      *  * OtherLocation ID : OtherID : otherID
      *  * Authority : String : authority   (organization number in PERSISTENT_ID)
      *  * Identifier : String : identifier (record identifier in PERSISTENT_ID)
+     *  * New or New Files : boolean : newOrNewFiles (to determine if files need to be downloaded)
      *
      *  ___________________________________________________________
      *  Terms of Use and Access Fields
@@ -37,6 +38,7 @@ public class SimpleCitationFields extends JSONField {
     private String title, subtitle, alternativeTitle, alternativeURL, license,notesText,productionPlace,depositor, accessToSources, publisher,originOfSources, characteristicOfSources, pID, authority, identifier, termsOfUse, confidDec, availabStat, specialPerms, restrictions, citationReqs, depositReqs, conditions, disclaimer, termsOfAcc, dataAccPlace, origArch, contactForAcc, sizeOfColl, studyComp,protocol, pURL;
     private Date productionDate,distributionDate,dateOfDeposit, publicationDate, lastModDate;
     private int versionMajor, versionMinor;
+    private boolean newOrNewFiles;
 
     public SimpleCitationFields() {
         this.pID = "";
@@ -73,6 +75,7 @@ public class SimpleCitationFields extends JSONField {
         this.sizeOfColl = "";
         this.studyComp = "";
         this.protocol = "";
+        this.newOrNewFiles = true;
     }
 
     public boolean hasField(String fieldName){
@@ -164,6 +167,9 @@ public class SimpleCitationFields extends JSONField {
                 break;
             case LAST_MOD_DATE:
                 setLastModDate(value);
+                break;
+            case NEW_OR_NEW_FILES:
+                setNewOrNewFiles(value);
                 break;
             default:
                 setTermsAndAccField(label,value);
@@ -319,6 +325,11 @@ public class SimpleCitationFields extends JSONField {
             return "Bad Field Name";
         }
     }
+
+    public boolean isNewOrNewFiles(){
+        return newOrNewFiles;
+    }
+
     public int getVersion(){
         int major = Integer.parseInt(getVersionMajor().equals("") ? "-1": getVersionMajor());
         int minor = Integer.parseInt(getVersionMinor().equals("") ? "-1": getVersionMinor());
@@ -408,6 +419,14 @@ public class SimpleCitationFields extends JSONField {
     public void setVersionMinor(int versionMinor) {
         this.versionMinor = versionMinor;
     }
+
+    public void setNewOrNewFiles(String val){
+        if(val.equals("0"))
+            this.newOrNewFiles = false;
+        else
+            this.newOrNewFiles = true;
+    }
+
 
     private String getTitle() {
         return title;

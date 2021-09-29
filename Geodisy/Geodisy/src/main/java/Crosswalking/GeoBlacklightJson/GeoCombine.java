@@ -26,7 +26,7 @@ public class GeoCombine {
     public void index(){
         deleteXML();
         moveMetadata();
-        clearSolr();
+        //clearSolr();
         combine();
     }
 

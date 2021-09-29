@@ -6,7 +6,6 @@ import _Strings.GeodisyStrings;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.HashMap;
 
 import static _Strings.GeodisyStrings.*;
 
@@ -29,7 +28,6 @@ public class ExistingGeoLabelsVals extends ExistingSearches implements Serializa
     }
 
     private ExistingGeoLabelsVals(){
-        logger = new GeoLogger(this.getClass());
         readExistingIDVals();
         eGL = ExistingGeoLabels.getExistingLabels();
 
@@ -76,7 +74,7 @@ public class ExistingGeoLabelsVals extends ExistingSearches implements Serializa
         try {
             fw.writeObjectToFile(lastRasterAndVectorIDs,TEST_EXISTING_BBOXES);
         } catch (IOException e) {
-            logger.error("Something went wrong saving existing bboxes");
+            getLogger().error("Something went wrong saving existing bboxes");
         }
     }
 
@@ -88,10 +86,10 @@ public class ExistingGeoLabelsVals extends ExistingSearches implements Serializa
             if(lastRasterAndVectorIDs==null)
                 lastRasterAndVectorIDs = newVals;
         } catch (IOException e) {
-            logger.error("Something went wrong reading the Existing GeoLabels file");
+            getLogger().error("Something went wrong reading the Existing GeoLabels file");
             lastRasterAndVectorIDs = newVals;
         } catch (ClassNotFoundException e) {
-            logger.error("Something went wrong parsing the Existing GeoLabels file");
+            getLogger().error("Something went wrong parsing the Existing GeoLabels file");
             lastRasterAndVectorIDs = newVals;
         }catch (NullPointerException e){
             lastRasterAndVectorIDs = newVals;
@@ -107,4 +105,11 @@ public class ExistingGeoLabelsVals extends ExistingSearches implements Serializa
         saveExistingFile(e.getGeoLabels(),EXISTING_GEO_LABELS,e.getClass().getName());
     }
 
+    @Override
+    protected GeoLogger getLogger() {
+        if (logger == null) {
+            logger = new GeoLogger(this.getClass());
+        }
+        return logger;
+    }
 }

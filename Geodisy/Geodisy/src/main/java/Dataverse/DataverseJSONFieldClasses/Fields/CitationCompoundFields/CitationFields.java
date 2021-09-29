@@ -235,6 +235,7 @@ public class CitationFields extends MetadataSimple {
         simpleCitationFields.setField(PUBLISHER, parseSimpleValue(current,PUBLISHER));
         simpleCitationFields.setField(PROTOCOL,parseSimpleValue(current,PROTOCOL));
         simpleCitationFields.setField(IDENTIFIER,parseSimpleValue(current,IDENTIFIER));
+        simpleCitationFields.setField(NEW_OR_NEW_FILES,parseSimpleValue(current,NEW_OR_NEW_FILES));
         current = getVersionSection(current);
         simpleCitationFields.setField(PROD_DATE,getValueDate(current,PROD_DATE));
         simpleCitationFields.setField(DEPOS_DATE,getValueDate(current,"createTime"));
@@ -499,6 +500,11 @@ public class CitationFields extends MetadataSimple {
     public String getPID(){
         return simpleCitationFields.getPersistentID();
     }
+
+    public boolean isNewOrHasNewFiles(){
+        return simpleCitationFields.isNewOrNewFiles();
+    }
+
 
     //If you update this method, also update copy in DataverseJavaObject
     public JSONObject getVersionSection(JSONObject current) {
