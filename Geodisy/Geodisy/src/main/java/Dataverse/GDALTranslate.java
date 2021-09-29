@@ -43,7 +43,10 @@ public class GDALTranslate {
 
         if(transformed) {
             int period = name.lastIndexOf(".");
-            return name.substring(0, period + 1) + "shp";
+            int endIndex;
+            //postgres maximum table name length is 63 characters
+            endIndex = period;
+            return name.substring(0, endIndex) + ".shp";
         }
         else{
             return name;
@@ -118,6 +121,7 @@ public class GDALTranslate {
                                 Files.deleteIfExists(tempFile.toPath());
                         }
                         files = new File(destPath).listFiles();
+                        //Postgres maximum table name length is 63 characters
                         for(File f: files){
                             String fileName = f.getName();
                             if(fileName.startsWith("temp.")){
