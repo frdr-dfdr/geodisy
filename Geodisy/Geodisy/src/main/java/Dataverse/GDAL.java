@@ -40,6 +40,7 @@ public class GDAL {
                 gdalString = new StringBuilder(processCall.runProcess(gdal + filePath,30, TimeUnit.SECONDS,args,logger)[0]);
 
             } else {
+                System.out.println("About to run gdal with " + gdal + filePath);
                 gdalString = new StringBuilder(processCall.runProcess(gdal + filePath,30, TimeUnit.SECONDS,logger)[0]);
 
             }
