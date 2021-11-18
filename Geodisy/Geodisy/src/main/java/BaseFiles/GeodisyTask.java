@@ -52,7 +52,7 @@ public class GeodisyTask {
 
             //TODO Uncomment sendRecordsToGeoBlacklight() once harvesting of FRDR has been approved on Prod
             if(!IS_WINDOWS) {
-                sendRecordsToGeoBlacklight();
+                //sendRecordsToGeoBlacklight();
                 //We are no longer updating Open Geo Metadata records due to sparely populated metadata files
                 /*if(!TEST) {
                     JGit jgit = new JGit();
