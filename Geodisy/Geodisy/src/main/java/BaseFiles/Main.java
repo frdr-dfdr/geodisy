@@ -39,11 +39,11 @@ public class Main {
         else
             dev = "Using the prod servers, is this correct?";
         GeodisyStrings.load();
-        /*GeodisyTask geodisyTask = new GeodisyTask();
-        geodisyTask.run();*/
+        GeodisyTask geodisyTask = new GeodisyTask();
+        geodisyTask.run();
 
-        Tests tests = new Tests();
-        tests.runTests();
+        /*Tests tests = new Tests();
+        tests.runTests();*/
 
     }
 }
