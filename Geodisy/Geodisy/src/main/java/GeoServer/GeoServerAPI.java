@@ -154,7 +154,6 @@ public class GeoServerAPI extends DestinationAPI {
             //bring new layer over from POSTGIS
             String call = "curl -u " + GEOSERVER_USERNAME + ":" + GEOSERVER_PASSWORD + " -XPOST -H \"Content-type: text/xml\" -d \"<featureType><name>" + geoserverlabel.toLowerCase() + "</name><title>"+ title +"</title><nativeCRS>EPSG:4326</nativeCRS><srs>EPSG:4326</srs><enabled>true</enabled></featureType>\" " + GEOSERVER_REST + "workspaces/geodisy/datastores/" + vectorDB + "/featuretypes";
             System.out.println("App shp to Geoserver");
-            System.out.println(call);
             ProcessCall pc = new ProcessCall();
             pc.runProcess(call,30, TimeUnit.SECONDS, logger);
 
@@ -388,7 +387,7 @@ public class GeoServerAPI extends DestinationAPI {
 
     private void addRasterLayer(String geoserverLabel, String translatedTitle) throws InterruptedException, IOException, TimeoutException, ExecutionException {
         String fileLocation = DATA_DIR_LOC + GeodisyStrings.removeHTTPSAndReplaceAuthority((sjo.getPID())+"/").replace(".","/")+ translatedTitle;
-        String addRaster = GeodisyStrings.replaceSlashes("/usr/bin/curl -u admin:" + GEOSERVER_PASSWORD + " -XPUT -H \"Content-type: text/plain\" -d 'file://" + fileLocation + "' " + stringed(GEOSERVER_REST + "workspaces/geodisy/coveragestores/"+ geoserverLabel.toLowerCase() + "/external.geotiff?configure=first&coverageName=" + geoserverLabel));
+        String addRaster = GeodisyStrings.replaceSlashes("curl -u admin:" + GEOSERVER_PASSWORD + " -XPUT -H \"Content-type: text/plain\" -d 'file://" + fileLocation + "' " + stringed(GEOSERVER_REST + "workspaces/geodisy/coveragestores/"+ geoserverLabel.toLowerCase() + "/external.geotiff?configure=first&coverageName=" + geoserverLabel));
         System.out.println("Add raster layer: " + addRaster);
         processCall = new ProcessCall();
         processCall.runProcess(addRaster,2,TimeUnit.MINUTES,logger);
