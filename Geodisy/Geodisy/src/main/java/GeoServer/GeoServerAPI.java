@@ -154,6 +154,7 @@ public class GeoServerAPI extends DestinationAPI {
             //bring new layer over from POSTGIS
             String call = "curl -u " + GEOSERVER_USERNAME + ":" + GEOSERVER_PASSWORD + " -XPOST -H \"Content-type: text/xml\" -d \"<featureType><name>" + geoserverlabel.toLowerCase() + "</name><title>"+ title +"</title><nativeCRS>EPSG:4326</nativeCRS><srs>EPSG:4326</srs><enabled>true</enabled></featureType>\" " + GEOSERVER_REST + "workspaces/geodisy/datastores/" + vectorDB + "/featuretypes";
             System.out.println("App shp to Geoserver");
+            System.out.println(call);
             ProcessCall pc = new ProcessCall();
             pc.runProcess(call,30, TimeUnit.SECONDS, logger);
 
