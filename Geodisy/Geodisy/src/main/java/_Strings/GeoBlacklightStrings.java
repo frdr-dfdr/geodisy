@@ -59,7 +59,7 @@ public class GeoBlacklightStrings {
         GEOSERVER_DOWNLOAD_BASE = FRONTEND_ADDRESS + "/geoserver/geodisy/";
         GEOSERVER_RASTER_DOWNLOAD_BASE = GEOSERVER_DOWNLOAD_BASE + "wms?service=WMS&version=1.1.0&request=GetMap&layers=geodisy:";
         GEOSERVER_VECTOR_DOWNLOAD_BASE = GEOSERVER_DOWNLOAD_BASE + "ows?service=WFS&version=1.0.0&request=GetFeature&typeName=geodisy:";
-        GEOSERVER_REST = GEOSERVER_BASE + "rest/";
+        GEOSERVER_REST = GEOSERVER_BASE + "/rest/";
         GEOSERVER_WFS_LOCATION = GEOSERVER_DOWNLOAD_BASE +"wfs";
         GEOSERVER_WMS_LOCATION = GEOSERVER_DOWNLOAD_BASE +"wms";
         METADATA_DOWNLOAD_SERVICES = new String[]{RECORD_URL, WMS, WFS,DIRECT_FILE_DOWNLOAD,ISO_METADATA};

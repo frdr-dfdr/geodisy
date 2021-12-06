@@ -3,8 +3,10 @@ package TestFiles;
 public class Tests {
 
     public void runTests(){
-        DatasetProcessTest t = new DatasetProcessTest();
-        t.run();
+        GDALTest gt = new GDALTest();
+        gt.run();
+        /*DatasetProcessTest t = new DatasetProcessTest();
+        t.run();*/
 
         /*RepoNameNormalizationTest r = new RepoNameNormalizationTest();
         r.run();*/

@@ -119,7 +119,8 @@ public class GDAL {
         try {
             gdalString = getGDALInfo(filePath, regularName);
             if(gdalString.contains("FAILURE")||(gdalString.contains("ERROR"))) {
-                logger.warn("Something went wrong parsing " + regularName + " at " + filePath);
+                logger.warn("1 Something went wrong parsing " + regularName + " at " + filePath);
+                System.out.println(gdalString);
                 return new GeographicBoundingBox(doi);
             }
             if(gdalInfo) {
@@ -188,7 +189,7 @@ public class GDAL {
         try {
             ogrString = getGDALInfo(filePath, name);
             if(ogrString.contains("FAILURE")) {
-                logger.warn("Something went wrong parsing " + name + " at " + filePath);
+                logger.warn("Something went wrong parsing CSV " + name + " at " + filePath);
                 return new GeographicBoundingBox(djo.getPID());
             }
         GeographicBoundingBox temp = getVector(ogrString, name, filePath);
@@ -376,7 +377,8 @@ public class GDAL {
         try {
             String gdalString = getGDALInfo(path, name);
             if (gdalString.contains("FAILURE")){
-                logger.warn("Something went wrong parsing " + file.getName() + " at " + file.getPath());
+                logger.warn("2 Something went wrong parsing " + file.getName() + " at " + file.getPath());
+                System.out.println(gdalString);
                 return temp;
         }
             temp.setProjection(getProjection(gdalString));
@@ -389,7 +391,7 @@ public class GDAL {
             temp.setIsFromFile(true);
             temp.setBB(bb.getBB());
         } catch (IOException e) {
-            logger.error("Something went wrong parsing file: " + file.getName() + " at " + file.getAbsolutePath());
+            logger.error("3 Something went wrong parsing file: " + file.getName() + " at " + file.getAbsolutePath());
             return new DataverseRecordFile();
         }
         return temp;

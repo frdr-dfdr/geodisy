@@ -24,7 +24,7 @@ public class ProcessCall {
         if(GeodisyStrings.IS_WINDOWS)
             args.add("cmd.exe");
         else
-            args.add("/usr/bin/bash");
+            args.add("/bin/bash");
         args.add("-c");
         return runProcess(s, time, unit, args, logger);
     }
