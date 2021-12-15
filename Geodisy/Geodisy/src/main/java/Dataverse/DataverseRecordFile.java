@@ -42,9 +42,9 @@ public class DataverseRecordFile {
      * @param recordLabel
      * @param dbID
      * @param server
-     * @param datasetIdent
+     * @param fileIdent
      */
-    public DataverseRecordFile(String translatedTitle, String recordLabel, int dbID, String server, String datasetIdent){
+    public DataverseRecordFile(String translatedTitle, String fileIdent, int dbID, String server, String recordLabel){
         this.translatedTitle = translatedTitle;
         this.fileIdent = fileIdent;
         this.dbID = dbID;
@@ -56,7 +56,7 @@ public class DataverseRecordFile {
 
     }
 
-    public DataverseRecordFile(String translatedTitle, String recordLabel, int dbID, String server, String datasetIdent, String fileURL){
+    public DataverseRecordFile(String translatedTitle, String fileIdent, int dbID, String server, String recordLabel, String fileURL){
         this.translatedTitle = translatedTitle;
         this.fileIdent = fileIdent;
         this.dbID = dbID;
@@ -119,10 +119,9 @@ public class DataverseRecordFile {
      * @param gbb
      */
     public DataverseRecordFile(String recordLabel, GeographicBoundingBox gbb){
-        String dI =  recordLabel;
-        this.fileIdent = dI;
+        this.fileIdent = recordLabel;
         this.gbb = gbb;
-        this.gbb.setField(GEOSERVER_LABEL, dI.replace(".","_").replace("/","_").replace("\\","_"));
+        this.gbb.setField(GEOSERVER_LABEL, recordLabel.replace(".","_").replace("/","_").replace("\\","_"));
     }
 
     public DataverseRecordFile(DataverseRecordFile drf){
@@ -146,16 +145,15 @@ public class DataverseRecordFile {
         ProcessCallFileDownload process = new ProcessCallFileDownload();
         String fileName = getFileName();
         String url = getFileURL();
-        String path = dirPath;
         try{
             try {
                 process.downloadFile(getFileURL(),getFileName(),dirPath,logger,20, TimeUnit.MINUTES);
             } catch (TimeoutException e) {
                 logger.error("Download Timedout for " + fileName + " at url " + url);
-                Files.deleteIfExists(Paths.get(path+fileName));
+                Files.deleteIfExists(Paths.get(dirPath +fileName));
             } catch (InterruptedException e) {
                 logger.error("Download Error for " + fileName + " at url " + url);
-                Files.deleteIfExists(Paths.get(path+fileName));
+                Files.deleteIfExists(Paths.get(dirPath +fileName));
             }
         }catch (IOException e) {
             logger.error("Delete failed download failed for " + fileName + " from " + url);
@@ -275,7 +273,7 @@ public class DataverseRecordFile {
             finally{
                 try{
                     writer.close();
-                } catch (IOException e) {
+                } catch (IOException|NullPointerException e) {
                     logger.error("Something went wrong when converting a .tab file to .csv when closing writer: " + title);
                 }
             }

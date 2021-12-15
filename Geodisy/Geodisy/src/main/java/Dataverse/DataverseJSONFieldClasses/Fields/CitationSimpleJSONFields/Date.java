@@ -40,17 +40,19 @@ public class Date extends JSONField implements DateField {
 
     public static TemporalAccessor checkDateString(String value) throws DateTimeParseException{
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("[uuuu[-MM[-dd['T'HH:mm:ss[X]]]]");
-            TemporalAccessor date = formatter.parseBest(value, ZonedDateTime::from, LocalDateTime::from, LocalDate::from, YearMonth::from, Year::from);
-            return date;
+        return formatter.parseBest(value, ZonedDateTime::from, LocalDateTime::from, LocalDate::from, YearMonth::from, Year::from);
     }
 
     public int getYear(){
-        Year y = Year.from(date);
-        //value -111111 is to indicate there was not a parsable date to get a year value from this TemporalAccessor
-        if(y==null ||y.toString()=="9999")
+        try{
+            Year y = Year.from(date);
+            if(y.toString()!="9999")
+                return y.getValue();
+        } catch (DateTimeException e){
+            //value -111111 is to indicate there was not a parsable date to get a year value from this TemporalAccessor
             return -111111;
-        return y.getValue();
-
+        }
+        return -111111;
     }
 
 
