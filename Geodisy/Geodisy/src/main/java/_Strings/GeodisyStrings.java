@@ -141,8 +141,8 @@ public class GeodisyStrings {
         private final static String LOCAL_GDAL_PATH = "C:\\\"Program Files\"\\python39\\Lib\\site-packages\\osgeo\\";
         private final static String GDALINFO_LOCAL = LOCAL_GDAL_PATH + "gdalinfo -approx_stats ";
         private final static String OGRINFO_LOCAL = LOCAL_GDAL_PATH + "ogrinfo -ro -al -so ";
-        private final static String GDALINFO_CLOUD = "/usr/gdal30/bin/gdalinfo -approx_stats ";
-        private final static String OGRINFO_CLOUD = "/usr/gdal30/bin/ogrinfo -ro -al -so ";
+        private final static String GDALINFO_CLOUD = "/usr/bin/gdalinfo -approx_stats ";
+        private final static String OGRINFO_CLOUD = "/usr/bin/ogrinfo -ro -al -so ";
         public static String GDALINFO;
         public static String OGRINFO;
         private final static String[] GDALINFO_PROCESSABLE_EXTENSIONS = { ".tif", ".tiff",".xyz", ".png"};
@@ -165,10 +165,10 @@ public class GeodisyStrings {
         public final static String[] PREVIEWABLE_FILE_EXTENSIONS = {".tif"};
         private final static String OGR2OGR_LOCAL = LOCAL_GDAL_PATH + "ogr2ogr -f \"ESRI Shapefile\" -t_srs EPSG:4326  -lco ENCODING=UTF-8 ";
         private final static String GDAL_TRANSLATE_LOCAL = LOCAL_GDAL_PATH + "gdal_translate -of GTiff ";
-        private final static String OGR2OGR_CLOUD = "/usr/gdal30/bin/ogr2ogr -t_srs EPSG:4326 -f \"ESRI Shapefile\" -lco ENCODING=UTF-8 ";
+        private final static String OGR2OGR_CLOUD = "/usr/bin/ogr2ogr -t_srs EPSG:4326 -f \"ESRI Shapefile\" -lco ENCODING=UTF-8 ";
         //GDAL for Raster conversion needs to be using GDAL version 2.x, so had to use a docker version of it for use with Centos
         //public final static String GDAL_DOCKER = "sudo docker run --rm -v /home:/home osgeo/gdal:alpine-ultrasmall-v2.4.1 "; //base call for docker gdal, but need the program call added on
-        private final static String GDAL_TRANSLATE_CLOUD = "/usr/gdal30/bin/gdal_translate -of GTiff ";
+        private final static String GDAL_TRANSLATE_CLOUD = "/usr/bin/gdal_translate -of GTiff ";
         public static String OGR2OGR;
         public static String GDAL_TRANSLATE;
         public final static String RASTER_CRS = "EPSG:3857";
@@ -176,11 +176,11 @@ public class GeodisyStrings {
         public static String GDAL_WARP_LOCAL(String path, String filename){ return LOCAL_GDAL_PATH + "gdalwarp -overwrite -t_srs " + RASTER_CRS +" -r near -multi -co TILED=YES -co COMPRESS=LZW " + path + filename +" " + path + "1" + filename;}
 
         public static String GDAL_WARP_CLOUD(String path, String fileName){
-        return "sudo /usr/gdal30/bin/gdalwarp -overwrite -t_srs "+ RASTER_CRS +" -r near -multi -co TILED=YES -co COMPRESS=LZW " + path + fileName + " " + path + "1"+ fileName; }
+        return "sudo /usr/bin/gdalwarp -overwrite -t_srs "+ RASTER_CRS +" -r near -multi -co TILED=YES -co COMPRESS=LZW " + path + fileName + " " + path + "1"+ fileName; }
 
         public static String GDALADDO(String source){ return getGdalAddo(source);}
         public static String GDAL_ADDO_LOCAL(String source){return LOCAL_GDAL_PATH + "gdaladdo " + source + " -r near --config COMPRESS_OVERVIEW LZW 2 4 8 16 32 64 128";}
-        public static String GDAL_ADDO_CLOUD(String source){return "sudo /usr/gdal30/bin/gdaladdo " + source + " -r near --config COMPRESS_OVERVIEW LZW 2 4 8 16 32 64 128";}
+        public static String GDAL_ADDO_CLOUD(String source){return "sudo /usr/bin/gdaladdo " + source + " -r near --config COMPRESS_OVERVIEW LZW 2 4 8 16 32 64 128";}
         public final static String[] PROCESSABLE_EXTENSIONS = ArrayUtils.addAll(ArrayUtils.addAll(GDALINFO_PROCESSABLE_EXTENSIONS,OGRINFO_PROCESSABLE_EXTENTIONS),CSV_EXTENTIONS);
 
         private static String getGdalWarp(String path, String fileName){
@@ -384,6 +384,7 @@ public class GeodisyStrings {
                 ,{"donnees.montreal.ca/dataset/", "montreal"}                                   //173
                 ,{"data.montreal.ca/dataset/", "montreal"}                                   //173
                 ,{"open.ottawa.ca/dataset/", "ottawa"}
+                ,{"ouverte.ottawa.ca/dataset/", "ottawa"}
 
 
 
