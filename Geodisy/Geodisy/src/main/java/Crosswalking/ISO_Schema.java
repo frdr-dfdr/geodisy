@@ -19,7 +19,6 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
 
-import static _Strings.DVFieldNameStrings.RECORD_LABEL;
 import static _Strings.GeodisyStrings.*;
 
 
@@ -58,10 +57,6 @@ public abstract class ISO_Schema implements XMLSchema {
             } catch (TransformerException e) {
                 logger.error("Something went wrong when trying to write " + recordLabel + "xml to the local repo.");
             }
-    }
-
-    private String safeDOI(String doi) {
-        return doi.replace("/", "_");
     }
 
     public File genDirs(String recordLabel, String localRepoPath) {

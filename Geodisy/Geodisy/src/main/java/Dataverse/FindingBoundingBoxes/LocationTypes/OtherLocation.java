@@ -1,7 +1,5 @@
 package Dataverse.FindingBoundingBoxes.LocationTypes;
 
-import BaseFiles.Geonames;
-import Dataverse.FindingBoundingBoxes.Location;
 /**
  * Shouldn't worry too much about OtherLocation as this needs to be manually checked anyways
  *

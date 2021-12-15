@@ -1,13 +1,10 @@
 package Dataverse.FindingBoundingBoxes;
 
 import BaseFiles.GeoLogger;
-import DataSourceLocations.Dataverse;
-import Dataverse.DataverseJSONFieldClasses.Fields.DataverseJSONGeoFieldClasses.GeographicCoverage;
 import Dataverse.DataverseJavaObject;
 import Dataverse.FindingBoundingBoxes.LocationTypes.BoundingBox;
 
 import java.io.*;
-import java.util.Map;
 
 
 public abstract class FindBoundBox {

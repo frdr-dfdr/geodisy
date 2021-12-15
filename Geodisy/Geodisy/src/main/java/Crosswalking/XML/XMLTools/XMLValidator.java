@@ -1,12 +1,8 @@
 package Crosswalking.XML.XMLTools;
-import javax.xml.XMLConstants;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.*;
-import java.io.File;
+
 import BaseFiles.GeoLogger;
 import org.xml.sax.*;
 

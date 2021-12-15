@@ -37,7 +37,6 @@ public class HTTPCallerGeosever extends HTTPCaller {
             con.setConnectTimeout(60000);
             con.setReadTimeout(20000);
             con.setRequestProperty("Cookie", "troute=t1");
-            con.setFollowRedirects(true);
 
             return con;
         } catch (ProtocolException e) {

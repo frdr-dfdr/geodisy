@@ -2,7 +2,6 @@ package Dataverse;
 
 import BaseFiles.GeoLogger;
 import BaseFiles.HTTPGetCall;
-import BaseFiles.ProcessCall;
 import _Strings.GeodisyStrings;
 import Dataverse.DataverseJSONFieldClasses.Fields.DataverseJSONGeoFieldClasses.*;
 import Dataverse.DataverseJSONFieldClasses.Fields.DataverseJSONSocialFieldClasses.SocialFields;
@@ -16,9 +15,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 
 import static _Strings.GeodisyStrings.*;

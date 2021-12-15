@@ -9,9 +9,7 @@ import Dataverse.DataverseJSONFieldClasses.Fields.CitationSimpleJSONFields.Simpl
 import Dataverse.DataverseJavaObject;
 import org.w3c.dom.Element;
 
-import java.nio.charset.Charset;
 import java.util.List;
-import java.util.UUID;
 
 import static _Strings.GeodisyStrings.CHARACTER;
 import static _Strings.GeodisyStrings.XML_NS;
@@ -125,10 +123,6 @@ public class ISOXMLGen extends DjoXMLGenerator {
         levelI.appendChild(levelJ);
         mdMetadata.appendChild(levelI);
         return mdMetadata;
-    }
-
-    private String xmlNSElement() {
-        return "xmlns";
     }
 
     private String xmlNSElement(String s) {

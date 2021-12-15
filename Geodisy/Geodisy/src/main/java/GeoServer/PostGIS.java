@@ -11,7 +11,6 @@ import java.io.FileNotFoundException;
 import java.util.concurrent.*;
 
 
-import static _Strings.DVFieldNameStrings.PERSISTENT_ID;
 import static _Strings.DVFieldNameStrings.RECORD_LABEL;
 import static _Strings.GeoserverStrings.*;
 

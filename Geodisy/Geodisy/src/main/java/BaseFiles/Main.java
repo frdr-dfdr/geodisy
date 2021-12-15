@@ -8,10 +8,6 @@ package BaseFiles;
 import _Strings.GeodisyStrings;
 import static _Strings.GeodisyStrings.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 
 /**
  *

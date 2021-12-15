@@ -83,7 +83,7 @@ public class ExistingGeoLabels extends ExistingFile implements Serializable {
     }
 
     public boolean hasGeoLabel(String label){
-        return geoFiles.keySet().contains(label);
+        return geoFiles.containsKey(label);
     }
 
     public String getGeoLabel(String recordLabel, String filename){

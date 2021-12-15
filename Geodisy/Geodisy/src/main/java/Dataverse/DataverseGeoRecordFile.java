@@ -60,8 +60,8 @@ public class DataverseGeoRecordFile extends DataverseRecordFile {
     }
 
 
-    public void getGdalString(){
-        gdalInfo.getFullGdalString();
+    public String getGdalString(){
+        return gdalInfo.getFullGdalString();
     }
 
     public String getMaxX() {

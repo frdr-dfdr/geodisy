@@ -1,7 +1,6 @@
 package Dataverse.FindingBoundingBoxes.LocationTypes;
 import java.io.Serializable;
 
-import static _Strings.DVFieldNameStrings.GEOSERVER_LABEL;
 import static _Strings.GeodisyStrings.*;
 
 public class BoundingBox implements Serializable {
@@ -14,7 +13,6 @@ public class BoundingBox implements Serializable {
     private String fileName = "";
     private String geometryType = UNDETERMINED;
     private String geoserverLabel = "";
-    private String doi = "";
     private String width = "0";
     private String height = "0";
     private String place = "";
@@ -154,19 +152,8 @@ public class BoundingBox implements Serializable {
         this.fileName = fileName;
     }
 
-    public String getGeometryType() {
-        return geometryType;
-    }
-
     public void setGeometryType(String geometryType) {
         this.geometryType = geometryType;
-    }
-
-    public String getGeoserverLabel() {
-        String answer = geoserverLabel;
-        if(Character.isDigit(answer.charAt(0)))
-            answer = "g_" + answer;
-        return answer;
     }
 
     public void setGeoserverLabel(String s){

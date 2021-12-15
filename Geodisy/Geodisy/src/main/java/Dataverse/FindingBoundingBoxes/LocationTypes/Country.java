@@ -1,7 +1,6 @@
 package Dataverse.FindingBoundingBoxes.LocationTypes;
 
 
-import Dataverse.ExistingLocations;
 import Dataverse.FindingBoundingBoxes.Location;
 import org.w3c.dom.Element;
 

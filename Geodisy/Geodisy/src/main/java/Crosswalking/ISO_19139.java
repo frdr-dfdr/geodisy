@@ -5,14 +5,10 @@
  */
 package Crosswalking;
 
-import Crosswalking.GeoBlacklightJson.DataGBJSON;
 import Crosswalking.XML.XMLTools.XMLDocObject;
 import Crosswalking.XML.XMLTools.ISOXMLGen;
 import Dataverse.DataverseJavaObject;
 import Dataverse.SourceJavaObject;
-
-import java.util.LinkedList;
-import java.util.List;
 
 import static _Strings.DVFieldNameStrings.RECORD_LABEL;
 

@@ -1,7 +1,6 @@
 package BaseFiles;
 
 import Dataverse.ExistingDatasetBBoxes;
-import _Strings.GeodisyStrings;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;

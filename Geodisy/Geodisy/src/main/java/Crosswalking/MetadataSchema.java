@@ -5,12 +5,8 @@
  */
 package Crosswalking;
 
-import Crosswalking.XML.XMLTools.XMLDocObject;
-import Dataverse.SourceJavaObject;
-
 
 import java.io.File;
-import java.util.List;
 
 /**
  * Interface for the output metadata schema side of a crosswalk

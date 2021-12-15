@@ -19,7 +19,6 @@ import java.util.List;
 import static _Strings.GeodisyStrings.*;
 import static _Strings.XMLStrings.*;
 import static _Strings.DVFieldNameStrings.*;
-import static _Strings.DVFieldNameStrings.SOFTWARE;
 
 public class IdentificationInfo extends SubElement {
     List<OtherID> otherIds;

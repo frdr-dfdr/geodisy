@@ -3,15 +3,7 @@ package Dataverse.DataverseJSONFieldClasses;
 import BaseFiles.GeoLogger;
 import Crosswalking.JSONParsing.DataverseParser;
 
-import org.apache.commons.validator.routines.UrlValidator;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
-
-import static org.apache.commons.validator.routines.UrlValidator.ALLOW_ALL_SCHEMES;
 
 
 public abstract class JSONField {

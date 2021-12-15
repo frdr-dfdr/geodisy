@@ -2,7 +2,6 @@ package Dataverse;
 
 import BaseFiles.GeoLogger;
 import Crosswalking.JSONParsing.DataverseParser;
-import _Strings.TestStrings;
 import org.json.JSONException;
 import org.json.JSONTokener;
 import org.json.JSONArray;
@@ -15,6 +14,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -147,21 +147,6 @@ public class FRDRAPI extends SourceAPI{
 
     //___________________________________________________________________________________________
     //No longer needed since metadata coming from FRDR Harvester
-
-    @Override
-    protected HashSet<String> searchDV() {
-        return null;
-    }
-
-    @Override
-    protected LinkedList<JSONObject> downloadMetadata(HashSet<String> dIOs) {
-        return null;
-    }
-
-    @Override
-    public LinkedList<SourceJavaObject> harvest(LinkedList<SourceJavaObject> answers) {
-        return null;
-    }
 
     @Override
     protected void deleteMetadata(String identifier) {

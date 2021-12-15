@@ -1,10 +1,8 @@
 package BaseFiles;
 
 import Dataverse.DataverseRecordFile;
-import java.io.FileInputStream;
 
 import _Strings.GeodisyStrings;
-import io.netty.handler.timeout.TimeoutException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
@@ -17,21 +15,12 @@ import org.apache.http.impl.client.HttpClients;
 
 
 import java.io.*;
-import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.Calendar;
 import java.util.LinkedList;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
-
-import static _Strings.GeodisyStrings.*;
-
 
 
 public class HTTPGetCall {

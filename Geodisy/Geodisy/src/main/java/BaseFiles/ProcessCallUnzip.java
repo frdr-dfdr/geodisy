@@ -1,10 +1,8 @@
 package BaseFiles;
 
-import Dataverse.DataverseRecordFile;
 import GeoServer.FileInfo;
 import GeoServer.Unzip;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.concurrent.*;
@@ -30,7 +28,7 @@ public class ProcessCallUnzip extends ProcessCall{
         }
 
         @Override
-        public LinkedList<FileInfo> call() throws FileNotFoundException, IOException {
+        public LinkedList<FileInfo> call() throws IOException {
             Unzip unzip = new Unzip();
             return unzip.unzipFunction(filePath,destination);
         }

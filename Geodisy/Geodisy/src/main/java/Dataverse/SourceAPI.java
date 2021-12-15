@@ -10,7 +10,6 @@ import BaseFiles.GeoLogger;
 import BaseFiles.Geonames;
 import Crosswalking.Crosswalk;
 import Crosswalking.GeoBlacklightJson.DataGBJSON;
-import _Strings.GeodisyStrings;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONObject;
 
@@ -19,7 +18,6 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-import static _Strings.GeodisyStrings.DATA_DIR_LOC;
 import static _Strings.GeodisyStrings.HUGE_RECORDS_TO_IGNORE_UNTIL_LATER;
 
 /**
@@ -27,9 +25,6 @@ import static _Strings.GeodisyStrings.HUGE_RECORDS_TO_IGNORE_UNTIL_LATER;
  * @author pdante
  */
 public abstract class SourceAPI implements API {
-    abstract protected HashSet<String> searchDV();
-    abstract protected LinkedList<JSONObject> downloadMetadata(HashSet<String> dIOs);
-    abstract public LinkedList<SourceJavaObject> harvest(LinkedList<SourceJavaObject> answers);
     abstract protected void deleteMetadata(String doi);
     abstract protected void deleteFromGeoserver(String identifier);
     protected SourceJavaObject getBBFromGeonames(SourceJavaObject sjo) {

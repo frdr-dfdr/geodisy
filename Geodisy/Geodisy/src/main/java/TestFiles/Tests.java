@@ -49,9 +49,6 @@ public class Tests {
 
         //testCombine(args);
 
-        //Run the below solo to download
-        /*DownloadRecord downloadRecord = new DownloadRecord();
-        downloadRecord.run("doi:10.5072/FK2/KZRG9F");*/
 
         /*GDALTest gdalTest = new GDALTest();
         gdalTest.testUnzip();
