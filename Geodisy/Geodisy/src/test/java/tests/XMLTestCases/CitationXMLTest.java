@@ -76,7 +76,7 @@ DataverseJavaObject djo;
         ISOXMLGen xmlGenerator = new ISOXMLGen(djo);
         XMLDocObject xmlFile = xmlGenerator.generateXMLFile();
         ISO_19139 iso = new ISO_19139();
-        iso.saveXMLToFile(xmlFile.getDoc(), xmlFile.getDoi(), true);
+        iso.saveXMLToFile(xmlFile.getDoc(),xmlFile.getDoi(),true );
     }
 
     @Test
