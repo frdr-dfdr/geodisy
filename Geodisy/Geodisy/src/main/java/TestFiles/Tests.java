@@ -6,8 +6,6 @@ public class Tests {
         DatasetProcessTest t = new DatasetProcessTest();
         t.run();
 
-        /*RepoNameNormalizationTest r = new RepoNameNormalizationTest();
-        r.run();*/
         /*TestAddingDatasets t = new TestAddingDatasets();
         t.run();*/
 

@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+import static _Strings.DVFieldNameStrings.RECORD_LABEL;
 import static _Strings.GeodisyStrings.*;
 
 
@@ -59,11 +60,12 @@ public class FRDRAPI extends SourceAPI{
                     if (djo.hasGeoGraphicCoverage())
                         djo = (DataverseJavaObject) getBBFromGeonames(djo);
                     if (djo.hasContent && djo.isNewOrHasNewFiles() && !testing) {
-                        System.out.println("Downloading record: " + djo.getPID());
+                        String recordLabel = djo.getSimpleFieldVal(RECORD_LABEL);
+                        System.out.println("Downloading record: " + recordLabel);
                         long startTime = Calendar.getInstance().getTimeInMillis();
-                        if(!dontProcessSpecificRecords(djo.getPID())) {
+                        if(!dontProcessSpecificRecords(recordLabel)){
                             if(!testing) {
-                                System.out.println("Downloading record: " + djo.getPID());
+                                System.out.println("Downloading Files");
                                 djo.setGeoDataFiles(djo.downloadFiles());
                             }
                             if(djo.geoDataFiles.size()>0||djo.geoDataMeta.size()>0)

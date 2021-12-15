@@ -6,6 +6,8 @@ import Dataverse.DataverseJavaObject;
 import Dataverse.SourceJavaObject;
 import GeoServer.GeoServerAPI;
 
+import static _Strings.DVFieldNameStrings.RECORD_LABEL;
+
 public class GeoserverTest {
 
     public void testAddingARaster(){
@@ -16,7 +18,7 @@ public class GeoserverTest {
         cf.setPID(doi);
         sjo.setCitationFields(cf);
         GeoServerAPI geoServerAPI = new GeoServerAPI(sjo);
-        DataverseGeoRecordFile dgrf = new DataverseGeoRecordFile(doi,fileName);
+        DataverseGeoRecordFile dgrf = new DataverseGeoRecordFile(sjo.getSimpleFieldVal(RECORD_LABEL),fileName);
         geoServerAPI.addRaster(dgrf);
     }
 
@@ -31,9 +33,9 @@ public class GeoserverTest {
             CitationFields cf = sjo.getCitationFields();
             cf.setPID(doi);
             sjo.setCitationFields(cf);
-            DataverseGeoRecordFile dgrf = new DataverseGeoRecordFile(doi, fileName);
+            DataverseGeoRecordFile dgrf = new DataverseGeoRecordFile(sjo.getSimpleFieldVal(RECORD_LABEL), fileName);
             GeoServerAPI geoServerAPI = new GeoServerAPI(sjo);
-            geoServerAPI.addVector(fileName, doi+count);
+            geoServerAPI.addVector(fileName, sjo.getSimpleFieldVal(RECORD_LABEL)+count);
             count++;
         }
     }

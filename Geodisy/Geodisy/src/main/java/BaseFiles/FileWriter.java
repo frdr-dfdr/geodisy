@@ -56,7 +56,7 @@ public class FileWriter {
     }
     //TODO figure out where this is actually getting used
     public static String fixPath(String path) {
-        String answer = GeodisyStrings.removeHTTPSAndReplaceAuthority(path);
+        String answer = path;
         if (path.contains("doi:")) {
             answer = path.replace("doi:", "doi/");
         }

@@ -23,8 +23,8 @@ public class SourceRecordFiles {
         return files.get(doi+fileName);
     }
 
-    public void putRecord(String doi, String fileName, DataverseRecordFile drv){
-        files.put(doi+fileName,drv);
+    public void putRecord(String authAndUUID, String fileName, DataverseRecordFile drv){
+        files.put(authAndUUID+fileName,drv);
     }
 
     public Set<String> getKeys(){

@@ -52,9 +52,9 @@ public class GDAL {
     }
     //Not used by main program
     public DataverseJavaObject generateBB(DataverseJavaObject djo) {
-        String doi = djo.getPID();
-        String path = GeodisyStrings.removeHTTPSAndReplaceAuthority(doi).replace(".","/") + GeodisyStrings.replaceSlashes("/");
-        String folderName = DATA_DIR_LOC +path;
+        String recordLabel = djo.getSimpleFieldVal(RECORD_LABEL);
+        String path = recordLabel;
+        String folderName = DATA_DIR_LOC + path;
         LinkedList<DataverseGeoRecordFile> origRecords = djo.getGeoDataFiles();
         if(origRecords.size()==0)
             return djo;
@@ -75,20 +75,20 @@ public class GDAL {
         int raster = 1;
         int vector = 1;
         LinkedList<DataverseGeoRecordFile> records = new LinkedList<>();
-        GeographicBoundingBox temp = new GeographicBoundingBox(doi);
+        GeographicBoundingBox temp = new GeographicBoundingBox(recordLabel);
         for(DataverseGeoRecordFile drf : origRecords) {
             String name = drf.getTranslatedTitle();
             String filePath = DATA_DIR_LOC + path + name;
             File file = new File(filePath);
 
             if (name.endsWith("tif")) {
-                temp = generateBB(file, doi, String.valueOf(raster));
+                temp = generateBB(file, recordLabel, String.valueOf(raster));
                 if(temp.hasBB())
                     raster++;
                 else
                     continue;
             } else if (name.endsWith("shp")) {
-                temp = generateBB(file, doi, String.valueOf(vector));
+                temp = generateBB(file, recordLabel, String.valueOf(vector));
                 if(temp.hasBB())
                     vector++;
                 else
@@ -103,14 +103,14 @@ public class GDAL {
         return djo;
     }
 
-    public GeographicBoundingBox generateBB(File file, String doi, String number){
+    public GeographicBoundingBox generateBB(File file, String recordLabel, String number){
         String lowerName = file.getName().toLowerCase();
         String regularName = file.getName();
         String filePath = file.getPath();
         if(!GeodisyStrings.gdalinfoRasterExtention(lowerName) && !GeodisyStrings.ogrinfoVectorExtension(lowerName))
-            return new GeographicBoundingBox(doi);
+            return new GeographicBoundingBox(recordLabel);
         if(GeodisyStrings.otherShapeFilesExtensions(lowerName))
-            return new GeographicBoundingBox(doi);
+            return new GeographicBoundingBox(recordLabel);
         boolean gdalInfo = GeodisyStrings.gdalinfoRasterExtention(lowerName);
 
         String gdalString;
@@ -120,7 +120,7 @@ public class GDAL {
             gdalString = getGDALInfo(filePath, regularName);
             if(gdalString.contains("FAILURE")||(gdalString.contains("ERROR"))) {
                 logger.warn("Something went wrong parsing " + regularName + " at " + filePath);
-                return new GeographicBoundingBox(doi);
+                return new GeographicBoundingBox(recordLabel);
             }
             if(gdalInfo) {
                 temp = getRaster(gdalString, filePath, regularName );
@@ -133,7 +133,7 @@ public class GDAL {
             temp.setIsGeneratedFromGeoFile(true);
 
             if(temp.hasBB()) {
-                GeographicBoundingBox gbb = new GeographicBoundingBox(doi);
+                GeographicBoundingBox gbb = new GeographicBoundingBox(recordLabel);
                 gbb.setIsGeneratedFromGeoFile(temp.isGeneratedFromGeoFile());
                 gbb.setField(FILE_NAME,temp.getField(FILE_NAME));
                 gbb.setField(GEOMETRY,temp.getField(GEOMETRY));
@@ -143,27 +143,27 @@ public class GDAL {
                 ExistingGeoLabelsVals existingGeoLabelsVals = ExistingGeoLabelsVals.getExistingGeoLabelsVals();
                 lowerName = gbb.getField(FILE_NAME).toLowerCase();
                 if(lowerName.endsWith(".shp")) {
-                    gbb.setField(GEOSERVER_LABEL,existingGeoLabelsVals.addVector(doi,file.getName()));
+                    gbb.setField(GEOSERVER_LABEL,existingGeoLabelsVals.addVector(recordLabel,file.getName()));
                     gbb.setFileNumber(Integer.valueOf(number));
                     existingGeoLabelsVals.saveExistingGeoLabels();
                     return gbb;
                 }
                 else if(lowerName.endsWith(".tif")) {
-                    gbb.setField(GEOSERVER_LABEL, existingGeoLabelsVals.addRaster(doi,file.getName()));
+                    gbb.setField(GEOSERVER_LABEL, existingGeoLabelsVals.addRaster(recordLabel,file.getName()));
                     gbb.setFileNumber(Integer.valueOf(number));
                     existingGeoLabelsVals.saveExistingGeoLabels();
                     return gbb;
                 }
                 else {
-                    logger.error("Somehow got a bounding box, but isn't a shp or tif with file " + filePath + " and persistantID=" + doi);
-                    return new GeographicBoundingBox(doi);
+                    logger.error("Somehow got a bounding box, but isn't a shp or tif with file " + filePath + " and persistantID=" + recordLabel);
+                    return new GeographicBoundingBox(recordLabel);
                 }
 
             }
         } catch (IOException e) {
             logger.error("Something went wrong trying to call GDAL with " + lowerName);
         }
-        return new GeographicBoundingBox(doi);
+        return new GeographicBoundingBox(recordLabel);
     }
 
     private String getProjection(String gdalString) {
@@ -180,8 +180,7 @@ public class GDAL {
     }
 
     public GeographicBoundingBox generateBoundingBoxFromCSV(String fileName, DataverseJavaObject djo){
-        String path = GeodisyStrings.removeHTTPSAndReplaceAuthority(djo.getPID()).replace("/","_") + GeodisyStrings.replaceSlashes("/");
-        path = path.replace(".","_");
+        String path = djo.getSimpleFieldVal(RECORD_LABEL) + GeodisyStrings.replaceSlashes("/");
         String filePath = DATA_DIR_LOC + path + fileName;
         String name = fileName;
         String ogrString = null;
@@ -189,7 +188,7 @@ public class GDAL {
             ogrString = getGDALInfo(filePath, name);
             if(ogrString.contains("FAILURE")) {
                 logger.warn("Something went wrong parsing " + name + " at " + filePath);
-                return new GeographicBoundingBox(djo.getPID());
+                return new GeographicBoundingBox(djo.getSimpleFieldVal(RECORD_LABEL));
             }
         GeographicBoundingBox temp = getVector(ogrString, name, filePath);
         temp.setIsGeneratedFromGeoFile(true);

@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import static _Strings.DVFieldNameStrings.RECORD_LABEL;
 import static _Strings.GeodisyStrings.GEODISY_PATH_ROOT;
 
 public class Crosswalk implements CrosswalkInterface {
@@ -18,7 +19,7 @@ public class Crosswalk implements CrosswalkInterface {
     public void convertSJO(SourceJavaObject record)  {
         XMLSchema metadata = new ISO_19139();
         metadata.generateXML(record);
-        String path = GeodisyStrings.replaceSlashes(GEODISY_PATH_ROOT + GeodisyStrings.removeHTTPSAndReplaceAuthority(record.getPID()) + "/iso19139.xml");
+        String path = GeodisyStrings.replaceSlashes(GEODISY_PATH_ROOT + record.getSimpleFieldVal(RECORD_LABEL) + "/iso19139.xml");
         try {
             Files.deleteIfExists(Paths.get(path));
         } catch (IOException e) {

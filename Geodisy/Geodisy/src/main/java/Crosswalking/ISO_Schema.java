@@ -19,6 +19,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
 
+import static _Strings.DVFieldNameStrings.RECORD_LABEL;
 import static _Strings.GeodisyStrings.*;
 
 
@@ -30,11 +31,11 @@ import static _Strings.GeodisyStrings.*;
 public abstract class ISO_Schema implements XMLSchema {
     GeoLogger logger = new GeoLogger(this.getClass());
 
-    public void saveXMLToFile(Document doc, String doi) {
-        saveXMLToFile(doc, doi, false);
+    public void saveXMLToFile(Document doc, String recordLabel) {
+        saveXMLToFile(doc, recordLabel, false);
     }
 
-    public void saveXMLToFile(Document doc, String doi, boolean testing) {
+    public void saveXMLToFile(Document doc, String recordLabel, boolean testing) {
         if (!doc.toString().contains("Junk_Dont_Use_This_XML"))
             try {
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -44,7 +45,7 @@ public abstract class ISO_Schema implements XMLSchema {
                 DOMSource source = new DOMSource(doc);
 
                 String loc = BASE_LOCATION_TO_STORE_METADATA;
-                File fileDir = genBaseDirs(GeodisyStrings.removeHTTPSAndReplaceAuthority(doi), loc);
+                File fileDir = genBaseDirs(recordLabel, loc);
                 File file = new File(fileDir + "/" + ISO_19139_XML);
                 FileWriter writer = new FileWriter(file);
                 StreamResult result = new StreamResult(writer.getFw());
@@ -53,9 +54,9 @@ public abstract class ISO_Schema implements XMLSchema {
                 Zip zip = new Zip();
                 zip.create(file);
             } catch (IOException e) {
-                logger.error("Something went wrong creating the FileWriter for " + doi);
+                logger.error("Something went wrong creating the FileWriter for " + recordLabel);
             } catch (TransformerException e) {
-                logger.error("Something went wrong when trying to write " + doi + "xml to the local repo.");
+                logger.error("Something went wrong when trying to write " + recordLabel + "xml to the local repo.");
             }
     }
 
@@ -63,9 +64,9 @@ public abstract class ISO_Schema implements XMLSchema {
         return doi.replace("/", "_");
     }
 
-    public File genDirs(String doi, String localRepoPath) {
+    public File genDirs(String recordLabel, String localRepoPath) {
         {
-            File fileDir = new File(GeodisyStrings.replaceSlashes(GEODISY_PATH_ROOT + localRepoPath + GeodisyStrings.removeHTTPSAndReplaceAuthority(doi).replace(".","/")));
+            File fileDir = new File(GeodisyStrings.replaceSlashes(GEODISY_PATH_ROOT + localRepoPath + recordLabel));
             if (!fileDir.exists())
                 fileDir.mkdirs();
 
@@ -73,8 +74,8 @@ public abstract class ISO_Schema implements XMLSchema {
         }
     }
 
-    public File genBaseDirs(String doi, String localRepoPath) {
-        File fileDir = genDirs(doi.replace(".","/"), localRepoPath);
+    public File genBaseDirs(String recordLabel, String localRepoPath) {
+        File fileDir = genDirs(recordLabel, localRepoPath);
         try {
             FileUtils.cleanDirectory(fileDir);
         } catch (IOException |IllegalArgumentException e) {

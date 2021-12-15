@@ -33,20 +33,20 @@ public class ExistingGeoLabelsVals extends ExistingSearches implements Serializa
 
     }
 
-    public String addRaster(String pID, String fileName){
-        if(eGL.hasGeoFile(pID,fileName))
-            return eGL.getGeoLabel(pID,fileName);
+    public String addRaster(String recordLabel, String fileName){
+        if(eGL.hasGeoFile(recordLabel,fileName))
+            return eGL.getGeoLabel(recordLabel,fileName);
         lastRasterAndVectorIDs[0] = lastRasterAndVectorIDs[0] +1;
         String label = "r" + extendedNum(String.valueOf(lastRasterAndVectorIDs[0]));
-        eGL.addOrReplaceGeoLabel(label,pID,fileName);
+        eGL.addOrReplaceGeoLabel(label,recordLabel,fileName);
         return getCurrentRaster();
     }
-    public String addVector(String pID, String fileName){
-        if(eGL.hasGeoFile(pID,fileName))
-            return eGL.getGeoLabel(pID,fileName);
+    public String addVector(String recordLabel, String fileName){
+        if(eGL.hasGeoFile(recordLabel,fileName))
+            return eGL.getGeoLabel(recordLabel,fileName);
         lastRasterAndVectorIDs[1] = lastRasterAndVectorIDs[1] +1;
         String label = "v" + extendedNum(String.valueOf(lastRasterAndVectorIDs[1]));
-        eGL.addOrReplaceGeoLabel(label,pID,fileName);
+        eGL.addOrReplaceGeoLabel(label,recordLabel,fileName);
         return getCurrentVector();
     }
 

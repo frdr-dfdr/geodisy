@@ -1,6 +1,7 @@
 package Dataverse.FindingBoundingBoxes.LocationTypes;
 import java.io.Serializable;
 
+import static _Strings.DVFieldNameStrings.GEOSERVER_LABEL;
 import static _Strings.GeodisyStrings.*;
 
 public class BoundingBox implements Serializable {
@@ -162,11 +163,14 @@ public class BoundingBox implements Serializable {
     }
 
     public String getGeoserverLabel() {
-        return geoserverLabel;
+        String answer = geoserverLabel;
+        if(Character.isDigit(answer.charAt(0)))
+            answer = "g_" + answer;
+        return answer;
     }
 
     public void setGeoserverLabel(String s){
-        geoserverLabel = "geodisy:" + s;
+        geoserverLabel = s;
     }
 
 

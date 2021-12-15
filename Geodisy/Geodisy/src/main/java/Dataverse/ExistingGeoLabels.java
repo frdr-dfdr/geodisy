@@ -32,9 +32,9 @@ public class ExistingGeoLabels extends ExistingFile implements Serializable {
             geoFiles = new HashMap<>();
     }
 
-    public void addOrReplaceGeoLabel(String geoserverID, String pID, String fileName){
-        if(!hasGeoFile(pID,fileName))
-            geoFiles.put(geoserverID, pID+fileName);
+    public void addOrReplaceGeoLabel(String geoserverID, String recordLabel, String fileName){
+        if(!hasGeoFile(recordLabel,fileName))
+            geoFiles.put(geoserverID, recordLabel+fileName);
     }
 
     public HashMap<String, String> readExistingGeoLabels(){
@@ -57,10 +57,10 @@ public class ExistingGeoLabels extends ExistingFile implements Serializable {
             return newFile;
         }
     }
-    public void removeRecord(String pID, String filename){
+    public void removeRecord(String recordLabel, String filename){
         Set<String> keys = geoFiles.keySet();
         for(String k: keys){
-            if(geoFiles.get(k).equals(pID+filename)){
+            if(geoFiles.get(k).equals(recordLabel+filename)){
                 geoFiles.remove(k);
                 break;
             }
@@ -72,10 +72,10 @@ public class ExistingGeoLabels extends ExistingFile implements Serializable {
         return geoFiles;
     }
 
-    public boolean hasGeoFile(String pID, String filename){
+    public boolean hasGeoFile(String recordLabel, String filename){
         Set<String> keys = geoFiles.keySet();
         for(String k: keys){
-            if(geoFiles.get(k).equals(pID+filename)){
+            if(geoFiles.get(k).equals(recordLabel+filename)){
                 return true;
             }
         }
@@ -86,10 +86,10 @@ public class ExistingGeoLabels extends ExistingFile implements Serializable {
         return geoFiles.keySet().contains(label);
     }
 
-    public String getGeoLabel(String pID, String filename){
+    public String getGeoLabel(String recordLabel, String filename){
         Set<String> keys = geoFiles.keySet();
         for(String k: keys) {
-            if (geoFiles.get(k).equals(pID + filename)) {
+            if (geoFiles.get(k).equals(recordLabel + filename)) {
                 return k;
             }
         }

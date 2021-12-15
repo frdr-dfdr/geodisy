@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import static _Strings.DVFieldNameStrings.RECORD_LABEL;
 import static _Strings.GeodisyStrings.DATA_DIR_LOC;
 
 public class DownloadDJOFiles {
@@ -16,7 +17,7 @@ public class DownloadDJOFiles {
 
     public DataverseJavaObject downloadFiles(DataverseJavaObject djo){
         this.djo = djo;
-        File f = new File(DATA_DIR_LOC + djo.urlized(djo.citationFields.getPID()));
+        File f = new File(DATA_DIR_LOC + djo.getSimpleFieldVal(RECORD_LABEL));
         try {
             djo.deleteDir(f);
         } catch (IOException e) {

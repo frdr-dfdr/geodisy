@@ -7,13 +7,15 @@ import org.junit.Test;
 
 import java.util.LinkedList;
 
+import static _Strings.DVFieldNameStrings.RECORD_LABEL;
+
 public class TestFRDRAPI {
     @Test
     public void getJSONRecords(){
         FRDRAPI f = new FRDRAPI();
         LinkedList<SourceJavaObject> djos = f.callFRDRHarvester(true);
         for(SourceJavaObject s: djos){
-            System.out.println(s.getPID());
+            System.out.println(s.getSimpleFieldVal(RECORD_LABEL));
         }
 
     }

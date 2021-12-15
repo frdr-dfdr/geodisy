@@ -36,17 +36,18 @@ public class DataGBJSON extends GeoBlacklightJSON{
         logger = new GeoLogger(this.getClass());
         geoFiles = djo.getGeoDataFiles();
         geoMeta = djo.getGeoDataMeta();
+        recordLabel = djo.getSimpleFieldVal(RECORD_LABEL);
     }
     @Override
     protected JSONObject getRequiredFields(GeographicBoundingBox gbb, int total,int boundingBoxNumber){
         String number = gbb.getFileNumber();
         jo.put("geoblacklight_version","1.0");
-        jo.put("dc_identifier_s", GeodisyStrings.urlSlashes(javaObject.getSimpleFieldVal(DVFieldNameStrings.RECORD_URL)));
+        jo.put("dc_identifier_s", GeodisyStrings.urlSlashes(javaObject.getSimpleFieldVal(RECORD_URL)));
         String geoserverLabel = getGeoserverLabel(gbb);
         if(((geoserverLabel.startsWith("r00")||geoserverLabel.startsWith("v00")) && geoserverLabel.length()==11)||(boundingBoxNumber==0))
-            jo.put("layer_slug_s", "geodisy:" + geoserverLabel.toLowerCase());
+            jo.put("layer_slug_s", geoserverLabel.toLowerCase());
         else
-            jo.put("layer_slug_s", "geodisy:" + geoserverLabel.toLowerCase() + padZeros(boundingBoxNumber, total));
+            jo.put("layer_slug_s", geoserverLabel.toLowerCase() + padZeros(boundingBoxNumber, total));
 
 
         String name = javaObject.getSimpleFields().getField(TITLE);
@@ -190,7 +191,7 @@ public class DataGBJSON extends GeoBlacklightJSON{
     protected JSONObject addBaseRecordInfo(){
         JSONObject jo = new JSONObject();
         jo.put(RECORD_URL,  GeodisyStrings.urlSlashes(javaObject.getSimpleFieldVal(DVFieldNameStrings.RECORD_URL)));
-        jo.put(ISO_METADATA, END_XML_JSON_FILE_PATH + GeodisyStrings.urlSlashes(GeodisyStrings.removeHTTPSAndReplaceAuthority(javaObject.getSimpleFieldVal(PERSISTENT_ID)).replace(".","/") + "/" + ISO_METADATA_FILE_ZIP));
+        jo.put(ISO_METADATA, END_XML_JSON_FILE_PATH + GeodisyStrings.urlSlashes((recordLabel) + "/" + ISO_METADATA_FILE_ZIP));
         return jo;
     }
 
@@ -326,12 +327,12 @@ public class DataGBJSON extends GeoBlacklightJSON{
             for(DataverseGeoRecordFile dgrf : recs){
                 if(geoRecs) {
                     if (!getGeoserverLabel(drf.getGBB()).equals(getGeoserverLabel(dgrf.getGBB()))) {
-                        ja.put("geodisy:" + getGeoserverLabel(dgrf.getGBB()).toLowerCase());
+                        ja.put(getGeoserverLabel(dgrf.getGBB()).toLowerCase());
                     }
                 } else{
                     int curBB =  dgrf.getBbCount();
                     if(count!=curBB)
-                        ja.put("geodisy:" + getGeoserverLabel(dgrf.getGBB()).toLowerCase() + padZeros(curBB,total));
+                        ja.put(getGeoserverLabel(dgrf.getGBB()).toLowerCase() + padZeros(curBB,total));
                 }
             }
             jo.put("dc_source_sm",ja);
@@ -372,7 +373,7 @@ public class DataGBJSON extends GeoBlacklightJSON{
 
             }
         }catch (IndexOutOfBoundsException e){
-            logger.warn("There was no extension on the original file name for record " + this.doi);
+            logger.warn("There was no extension on the original file name for record " + doi);
             return "";
         }
     }
@@ -478,12 +479,12 @@ public class DataGBJSON extends GeoBlacklightJSON{
             jo.put("dc_description_s",answer);
     }
 
-    public void saveJSONToFile(String json, String doi, String folderName){
-        genDirs(folderName, BASE_LOCATION_TO_STORE_METADATA);
+    public void saveJSONToFile(String json, String doi, String recordLabel){
+        genDirs(recordLabel, BASE_LOCATION_TO_STORE_METADATA);
         BaseFiles.FileWriter file = new BaseFiles.FileWriter();
-        folderName= GeodisyStrings.replaceSlashes(GEODISY_PATH_ROOT + BASE_LOCATION_TO_STORE_METADATA + folderName + "/" +"geoblacklight.json");
+        recordLabel= GeodisyStrings.replaceSlashes(GEODISY_PATH_ROOT + BASE_LOCATION_TO_STORE_METADATA + recordLabel + "/" +"geoblacklight.json");
         try {
-            file.writeStringToFile(json,GeodisyStrings.replaceSlashes(folderName));
+            file.writeStringToFile(json,GeodisyStrings.replaceSlashes(recordLabel));
         } catch (IOException e) {
             logger.error("Something went wrong trying to create a JSON file with doi:" + doi);
         }
@@ -496,13 +497,13 @@ public class DataGBJSON extends GeoBlacklightJSON{
         return folderName.substring(start,end);
     }
 
-    public void saveJSONToTestFile(String json, String doi, String uuid){
-        genDirs(doi, TEST_OPEN_METADATA_LOCAL_REPO);
+    public void saveJSONToTestFile(String json, String recordLabel, String uuid){
+        genDirs(recordLabel, TEST_OPEN_METADATA_LOCAL_REPO);
         BaseFiles.FileWriter file = new BaseFiles.FileWriter();
         try {
-            file.writeStringToFile(json,"./"+TEST_OPEN_METADATA_LOCAL_REPO + doi + "/" + uuid + "/" +"geoblacklight.json");
+            file.writeStringToFile(json,"./"+TEST_OPEN_METADATA_LOCAL_REPO + recordLabel + "/" + uuid + "/" +"geoblacklight.json");
         } catch (IOException e) {
-            logger.error("Something went wrong trying to create a JSON file with doi:" + doi);
+            logger.error("Something went wrong trying to create a JSON file with recordLabel:" + recordLabel);
         }
 
     }

@@ -17,7 +17,7 @@ import java.nio.file.Files;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import static _Strings.DVFieldNameStrings.PROTOCOL;
+import static _Strings.DVFieldNameStrings.*;
 
 public abstract class SourceJavaObject {
     protected CitationFields citationFields;
@@ -85,10 +85,13 @@ public abstract class SourceJavaObject {
         Files.deleteIfExists(f.toPath());
     }
     public String getPID(){
-        return citationFields.getPID();
+        return citationFields.getField(PERSISTENT_ID);
     }
     public void setPID(String pid){
-        citationFields.setPID(pid);
+        setSimpleFieldVal(PERSISTENT_ID,pid);
+    }
+    public String getPURL(){
+        return citationFields.getField(RECORD_URL);
     }
     public int getVersion(){
         return getCitationFields().getVersion();

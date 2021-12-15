@@ -36,17 +36,12 @@ public abstract class SourceAPI implements API {
             Geonames geonames = new Geonames();
             return geonames.getBoundingBox(sjo);
     }
-    protected void deleteMetadata(GeoLogger logger, String doi){
+    protected void deleteMetadata(GeoLogger logger, String recordLabel){
         try {
-            FileUtils.deleteDirectory(new File(folderizedDOI(doi)));
+            FileUtils.deleteDirectory(new File(recordLabel));
         } catch (IOException e) {
-            logger.error("Tried to delete records at " + doi);
+            logger.error("Tried to delete records at " + recordLabel);
         }
-    }
-    protected String folderizedDOI(String doi){
-        String folderizedDOI = GeodisyStrings.removeHTTPSAndReplaceAuthority(doi.replace(".","_"));
-        folderizedDOI = folderizedDOI.replace("/","_");
-        return DATA_DIR_LOC + folderizedDOI;
     }
 
     public void crosswalkRecord(SourceJavaObject sJO) {

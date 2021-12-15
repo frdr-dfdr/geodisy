@@ -30,7 +30,7 @@ public class DataverseGeoRecordFile extends DataverseRecordFile {
         this.setFileURL(drf.getFileURL());
     }
     public DataverseGeoRecordFile (DataverseRecordFile drf, String fileIdent){
-        super(drf.getTranslatedTitle(),drf.getFileIdent(),drf.dbID,drf.server,drf.datasetIdent);
+        super(drf.getTranslatedTitle(),fileIdent,drf.dbID,drf.server,drf.datasetIdent);
         gdalInfo = new GDALInformation();
     }
 
@@ -40,10 +40,10 @@ public class DataverseGeoRecordFile extends DataverseRecordFile {
     }
 
     //For testing
-    public DataverseGeoRecordFile(String doi, String translatedTitle){
+    public DataverseGeoRecordFile(String recordLabel, String translatedTitle){
         super();
         setTranslatedTitle(translatedTitle);
-        setGeoserverLabel(doi);
+        setGeoserverLabel(recordLabel);
     }
 
     @Override

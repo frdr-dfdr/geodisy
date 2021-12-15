@@ -271,7 +271,7 @@ public class GeographicFields extends MetadataType {
         double south = gBB.getSouthLatDub();
 
         if(east<west && east!=-181 && west!=181){
-            GeographicBoundingBox second = new GeographicBoundingBox(gBB.doi);
+            GeographicBoundingBox second = new GeographicBoundingBox(gBB.recordLabel);
             second.setNorthLatitude(String.valueOf(north));
             second.setSouthLatitude(String.valueOf(south));
             second.setWestLongitude(String.valueOf(west));

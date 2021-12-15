@@ -5,6 +5,7 @@ import Dataverse.DataverseJSONFieldClasses.Fields.CitationSimpleJSONFields.Date;
 import Dataverse.DataverseJSONFieldClasses.Fields.CitationSimpleJSONFields.SimpleCitationFields;
 
 import Dataverse.DataverseJSONFieldClasses.MetadataSimple;
+import _Strings.GeodisyStrings;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -498,9 +499,16 @@ public class CitationFields extends MetadataSimple {
     }
 
     public String getPID(){
-        return simpleCitationFields.getPersistentID();
+        return simpleCitationFields.getField(PERSISTENT_ID);
     }
 
+    public String getLabel(){
+        return GeodisyStrings.getAuthority(getPURL(),getPID());
+    }
+
+    public String getPURL(){
+        return simpleCitationFields.getField(RECORD_URL);
+    }
     public boolean isNewOrHasNewFiles(){
         return simpleCitationFields.isNewOrNewFiles();
     }
