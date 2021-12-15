@@ -69,11 +69,10 @@ public class Unzip {
                 }
                 if(fileName.toLowerCase().endsWith(".zip")) {
                     String filePath = destpath + fileName;
-                    String destPath = destpath;
                     ProcessCallUnzip process = new ProcessCallUnzip();
                     try {
 
-                        LinkedList<FileInfo> zippedFile = process.unzipFile(filePath, destPath, logger);
+                        LinkedList<FileInfo> zippedFile = process.unzipFile(filePath, destpath, logger);
                         answer.addAll(zippedFile);
                     } catch (InterruptedException | ExecutionException e) {
                         logger.error("Something went wrong trying to unzip: " + filePath + " from " + zipfilePath);

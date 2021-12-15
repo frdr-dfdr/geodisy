@@ -16,7 +16,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -103,10 +102,10 @@ public class FRDRAPI extends SourceAPI{
             conn.setDoInput(true);
             String json = "{\"geodisy_harvested\":1}";
             OutputStream os = conn.getOutputStream();
-            os.write(json.getBytes("UTF-8"));
+            os.write(json.getBytes(StandardCharsets.UTF_8));
             os.close();
             InputStream in = new BufferedInputStream(conn.getInputStream());
-            String result = org.apache.commons.io.IOUtils.toString(in, "UTF-8");
+            String result = org.apache.commons.io.IOUtils.toString(in, StandardCharsets.UTF_8);
 
 
             in.close();

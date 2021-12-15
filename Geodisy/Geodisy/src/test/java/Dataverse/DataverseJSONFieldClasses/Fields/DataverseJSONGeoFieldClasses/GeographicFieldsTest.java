@@ -23,7 +23,7 @@ class GeographicFieldsTest {
         gBB.setWestLongitude(-100);
         gBB.setNorthLatitude(24);
         gBB.setSouthLatitude(-18);
-        gf.addBB(bboxes,gBB);
+        gf.addBBForAntiMeridianCrossing(bboxes,gBB);
         BoundingBox bb = gf.getBoundingBox();
         assertEquals(bb.getLongWest(),-100);
         assertEquals(bb.getLongEast(),-10);
@@ -32,7 +32,7 @@ class GeographicFieldsTest {
         gBB.setWestLongitude("-34");
         gBB.setNorthLatitude("26");
         gBB.setSouthLatitude(-16);
-        gf.addBB(bboxes,gBB);
+        gf.addBBForAntiMeridianCrossing(bboxes,gBB);
         bb = gf.getBoundingBox();
         assertEquals(bb.getLongWest(),-100);
         assertEquals(bb.getLongEast(),20);
@@ -43,7 +43,7 @@ class GeographicFieldsTest {
         gBB.setWestLongitude("25");
         gBB.setNorthLatitude("26");
         gBB.setSouthLatitude(-16);
-        gf.addBB(bboxes,gBB);
+        gf.addBBForAntiMeridianCrossing(bboxes,gBB);
         bb = gf.getBoundingBox();
         assertEquals(bb.getLongWest(),25);
         assertEquals(bb.getLongEast(),20);
@@ -55,7 +55,7 @@ class GeographicFieldsTest {
         gBB.setWestLongitude(160);
         gBB.setNorthLatitude(80);
         gBB.setSouthLatitude(75);
-        gf.addBB(bboxes,gBB);
+        gf.addBBForAntiMeridianCrossing(bboxes,gBB);
         bb = gf.getBoundingBox();
         assertEquals(bb.getLongWest(),160);
         assertEquals(bb.getLongEast(),170);
@@ -64,7 +64,7 @@ class GeographicFieldsTest {
         gBB.setWestLongitude("-150");
         gBB.setNorthLatitude("26");
         gBB.setSouthLatitude(-16);
-        gf.addBB(bboxes,gBB);
+        gf.addBBForAntiMeridianCrossing(bboxes,gBB);
         bb = gf.getBoundingBox();
         assertEquals(bb.getLongWest(),160);
         assertEquals(bb.getLongEast(),-140);

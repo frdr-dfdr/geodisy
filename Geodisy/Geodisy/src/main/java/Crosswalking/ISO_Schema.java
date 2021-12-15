@@ -43,8 +43,7 @@ public abstract class ISO_Schema implements XMLSchema {
                 transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
                 DOMSource source = new DOMSource(doc);
 
-                String loc = BASE_LOCATION_TO_STORE_METADATA;
-                File fileDir = genBaseDirs(recordLabel, loc);
+                File fileDir = genBaseDirs(recordLabel, BASE_LOCATION_TO_STORE_METADATA);
                 File file = new File(fileDir + "/" + ISO_19139_XML);
                 FileWriter writer = new FileWriter(file);
                 StreamResult result = new StreamResult(writer.getFw());

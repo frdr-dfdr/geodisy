@@ -53,8 +53,7 @@ public class GDAL {
     //Not used by main program
     public DataverseJavaObject generateBB(DataverseJavaObject djo) {
         String recordLabel = djo.getSimpleFieldVal(RECORD_LABEL);
-        String path = recordLabel;
-        String folderName = DATA_DIR_LOC + path;
+        String folderName = DATA_DIR_LOC + recordLabel;
         LinkedList<DataverseGeoRecordFile> origRecords = djo.getGeoDataFiles();
         if(origRecords.size()==0)
             return djo;
@@ -78,7 +77,7 @@ public class GDAL {
         GeographicBoundingBox temp = new GeographicBoundingBox(recordLabel);
         for(DataverseGeoRecordFile drf : origRecords) {
             String name = drf.getTranslatedTitle();
-            String filePath = DATA_DIR_LOC + path + name;
+            String filePath = DATA_DIR_LOC + recordLabel + name;
             File file = new File(filePath);
 
             if (name.endsWith("tif")) {
@@ -182,19 +181,18 @@ public class GDAL {
     public GeographicBoundingBox generateBoundingBoxFromCSV(String fileName, DataverseJavaObject djo){
         String path = djo.getSimpleFieldVal(RECORD_LABEL) + GeodisyStrings.replaceSlashes("/");
         String filePath = DATA_DIR_LOC + path + fileName;
-        String name = fileName;
         String ogrString = null;
         try {
-            ogrString = getGDALInfo(filePath, name);
+            ogrString = getGDALInfo(filePath, fileName);
             if(ogrString.contains("FAILURE")) {
-                logger.warn("Something went wrong parsing " + name + " at " + filePath);
+                logger.warn("Something went wrong parsing " + fileName + " at " + filePath);
                 return new GeographicBoundingBox(djo.getSimpleFieldVal(RECORD_LABEL));
             }
-        GeographicBoundingBox temp = getVector(ogrString, name, filePath);
+        GeographicBoundingBox temp = getVector(ogrString, fileName, filePath);
         temp.setIsGeneratedFromGeoFile(true);
         return temp;
         } catch (IOException e) {
-            logger.error("Something went wrong trying to check " + name + " from record " + djo.getPID());
+            logger.error("Something went wrong trying to check " + fileName + " from record " + djo.getPID());
         }
         return new GeographicBoundingBox("junk");
     }

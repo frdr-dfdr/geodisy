@@ -1,7 +1,6 @@
 package Dataverse;
 
 import BaseFiles.GeoLogger;
-import BaseFiles.HTTPGetCall;
 import BaseFiles.ProcessCallFileDownload;
 import _Strings.GeodisyStrings;
 import Dataverse.DataverseJSONFieldClasses.Fields.DataverseJSONGeoFieldClasses.GeographicBoundingBox;
@@ -80,7 +79,6 @@ public class DataverseRecordFile {
         this.translatedTitle = translatedTitle;
         this.dbID = dbID;
         this.fileIdent = "";
-        this.server = server;
         recordURL = server+"api/access/datafile/" + dbID;
         this.datasetIdent = recordLabel;
         gbb = new GeographicBoundingBox(datasetIdent);

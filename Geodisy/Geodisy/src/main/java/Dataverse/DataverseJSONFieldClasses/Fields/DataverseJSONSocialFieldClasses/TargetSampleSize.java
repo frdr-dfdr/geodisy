@@ -20,8 +20,7 @@ public class TargetSampleSize extends CompoundJSONField {
             actualSize = Integer.parseInt(val);
         }
         if(field.has(TARGET_SAMPLE_SIZE_FORMULA)){
-            String val = field.getJSONObject(TARGET_SAMPLE_SIZE_FORMULA).getString(VAL);
-            forumla = val;
+            forumla = field.getJSONObject(TARGET_SAMPLE_SIZE_FORMULA).getString(VAL);
         }
         if(actualSize==0 && forumla.equals(""))
             errorParsing(this.getClass().toString(),"Tried to set a field that doesn't exist.");

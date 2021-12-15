@@ -5,7 +5,6 @@ import BaseFiles.HTTPGetCall;
 import _Strings.GeodisyStrings;
 import Dataverse.DataverseJSONFieldClasses.Fields.DataverseJSONGeoFieldClasses.*;
 import Dataverse.DataverseJSONFieldClasses.Fields.DataverseJSONSocialFieldClasses.SocialFields;
-import Dataverse.FindingBoundingBoxes.LocationTypes.BoundingBox;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -148,10 +147,7 @@ public class DataverseJavaObject extends SourceJavaObject {
                     dRF.setFileURL(server + DV_FILE_ACCESS_PATH + dbID);
                 }
                 SourceRecordFiles srf = SourceRecordFiles.getSourceRecords();
-                if (!dRF.getDatasetIdent().equals(""))
-                    srf.putRecord(dRF.getDatasetIdent(), dRF.translatedTitle, dRF);
-                else
-                    srf.putRecord(dRF.getDatasetIdent(), dRF.translatedTitle, dRF);
+                srf.putRecord(dRF.getDatasetIdent(), dRF.translatedTitle, dRF);
                 dataFiles.add(dRF);
             }catch (ClassCastException e){
                 logger.error("Something went wrong trying to parse the file metadata section for " + getPID() + " the json was " + fileFieldsArray.toString());

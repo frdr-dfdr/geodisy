@@ -239,26 +239,19 @@ public class DataGBJSON extends GeoBlacklightJSON{
             int start = d.getStartYear();
             int end = d.getEndYear();
             if(start==-111111){
-                if(end==-111111) {
-                    continue;
-                }
-                else{
-                    if(count == 1) {
+                if (end != -111111) {
+                    if (count == 1) {
                         dateRange += end;
-                        count++;
-                        continue;
                     } else {
                         dateRange += ", " + end;
-                        count++;
-                        continue;
                     }
+                    count++;
                 }
             }else{
                 if(end == -111111){
                     if(count == 1) {
                         dateRange += start;
                         count++;
-                        continue;
                     } else {
                         dateRange += ", " + start;
                     }
@@ -273,14 +266,12 @@ public class DataGBJSON extends GeoBlacklightJSON{
                     }
                     if(count>1) {
                         dateRange += ", " + range;
-                        count++;
-                        continue;
+
                     }
                     else {
                         dateRange += range;
-                        count++;
-                        continue;
                     }
+                    count++;
                 }
             }
 

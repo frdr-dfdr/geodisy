@@ -10,7 +10,6 @@ import static _Strings.DVFieldNameStrings.*;
 
 public class GeographicBoundingBox extends CompoundJSONField {
     private BoundingBox bb;
-    String recordLabel;
     private String projection = "";
     private String fileName = "";
     private String geometryType = UNDETERMINED;
@@ -31,12 +30,12 @@ public class GeographicBoundingBox extends CompoundJSONField {
 
 
     public GeographicBoundingBox(String recordLabel) {
-        this.recordLabel = recordLabel;
+        this.geoserverLabel = recordLabel;
         this.bb = new BoundingBox();
     }
 
     public GeographicBoundingBox(String recordLabel, BoundingBox bb){
-        this.recordLabel = recordLabel;
+        this.geoserverLabel = recordLabel;
         this.bb = bb;
     }
 
@@ -281,7 +280,6 @@ public class GeographicBoundingBox extends CompoundJSONField {
 
 
     private void setGeoserverLabel(String value){
-
         geoserverLabel = value;
     }
 
@@ -329,7 +327,7 @@ public class GeographicBoundingBox extends CompoundJSONField {
     public void setIsGeneratedFromGeoFile(boolean generated){this.generated=generated;}
 
     public String getOpenGeoMetaLocation() {
-        return OPEN_GEO_METADATA_BASE+ recordLabel + GeodisyStrings.replaceSlashes("\\") + ISO_19139_XML;
+        return OPEN_GEO_METADATA_BASE+ geoserverLabel + GeodisyStrings.replaceSlashes("\\") + ISO_19139_XML;
     }
 
     public boolean hasBB(){
@@ -355,7 +353,7 @@ public class GeographicBoundingBox extends CompoundJSONField {
         return bb.getWidth();
     }
     private String getHeight() {
-        return bb.getWidth();
+        return bb.getHeight();
     }
 
     public void setWidthHeight(String gdalString) {

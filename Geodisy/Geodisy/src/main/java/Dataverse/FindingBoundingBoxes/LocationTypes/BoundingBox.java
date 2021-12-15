@@ -128,11 +128,11 @@ public class BoundingBox implements Serializable {
     }
 
     public double getLatNorthUncheck(){
-        return latNorth>latSouth? latNorth:latSouth;
+        return Math.max(latNorth, latSouth);
     }
 
     public double getLatSouthUnchecked(){
-        return latSouth<latNorth? latSouth:latNorth;
+        return Math.min(latSouth, latNorth);
     }
     public boolean isGenerated() {
         return generated;
