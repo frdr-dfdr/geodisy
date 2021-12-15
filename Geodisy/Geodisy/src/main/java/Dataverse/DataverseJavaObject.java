@@ -2,6 +2,7 @@ package Dataverse;
 
 import BaseFiles.GeoLogger;
 import BaseFiles.HTTPGetCall;
+import Dataverse.FindingBoundingBoxes.LocationTypes.BoundingBox;
 import _Strings.GeodisyStrings;
 import Dataverse.DataverseJSONFieldClasses.Fields.DataverseJSONGeoFieldClasses.*;
 import Dataverse.DataverseJSONFieldClasses.Fields.DataverseJSONSocialFieldClasses.SocialFields;
