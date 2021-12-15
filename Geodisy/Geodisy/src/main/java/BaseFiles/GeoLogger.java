@@ -1,8 +1,9 @@
 package BaseFiles;
 
 import Dataverse.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
 
 import static _Strings.DVFieldNameStrings.RECORD_LABEL;
 
