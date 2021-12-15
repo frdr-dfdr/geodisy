@@ -1,8 +1,12 @@
 package BaseFiles;
 
 import Dataverse.*;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
+
+
 
 
 import static _Strings.DVFieldNameStrings.RECORD_LABEL;
@@ -14,11 +18,11 @@ public class GeoLogger {
     public Logger logger;
 
     public GeoLogger(String className) {
-        logger = LogManager.getLogger(className);
+        logger = (Logger) LogManager.getLogger(className);
     }
 
     public GeoLogger(Class classType){
-        logger = LogManager.getLogger(classType);
+        logger = (Logger) LogManager.getLogger(classType.getName());
     }
 
     public void error(String message){
