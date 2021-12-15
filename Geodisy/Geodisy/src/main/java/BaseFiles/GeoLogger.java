@@ -3,8 +3,8 @@ package BaseFiles;
 import Dataverse.*;
 
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Logger;
+import org.apache.logging.log4j.*;
+import org.apache.logging.log4j.Logger;
 
 
 
@@ -18,11 +18,11 @@ public class GeoLogger {
     public Logger logger;
 
     public GeoLogger(String className) {
-        logger = (Logger) LogManager.getLogger(className);
+        logger = LogManager.getLogger(className);
     }
 
     public GeoLogger(Class classType){
-        logger = (Logger) LogManager.getLogger(classType.getName());
+        logger = LogManager.getLogger(classType.getName());
     }
 
     public void error(String message){
