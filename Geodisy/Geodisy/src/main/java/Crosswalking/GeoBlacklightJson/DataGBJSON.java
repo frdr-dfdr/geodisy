@@ -21,7 +21,7 @@ import java.util.*;
 
 import static _Strings.GeodisyStrings.*;
 import static _Strings.GeoBlacklightStrings.*;
-import static _Strings.GeoBlacklightStrings.RECORD_URL;
+import static _Strings.GeoBlacklightStrings.FULL_LAYER_DESCRIPTION;
 import static _Strings.XMLStrings.TEST_OPEN_METADATA_LOCAL_REPO;
 import static _Strings.DVFieldNameStrings.*;
 
@@ -42,7 +42,7 @@ public class DataGBJSON extends GeoBlacklightJSON{
     protected JSONObject getRequiredFields(GeographicBoundingBox gbb, int total,int boundingBoxNumber){
         String number = gbb.getFileNumber();
         jo.put("geoblacklight_version","1.0");
-        jo.put("dc_identifier_s", GeodisyStrings.urlSlashes(javaObject.getSimpleFieldVal(RECORD_URL)));
+        jo.put("dc_identifier_s", GeodisyStrings.urlSlashes(javaObject.getSimpleFieldVal(RECORD_LABEL)));
         String geoserverLabel = getGeoserverLabel(gbb);
         if(((geoserverLabel.startsWith("r00")||geoserverLabel.startsWith("v00")) && geoserverLabel.length()==11)||(boundingBoxNumber==0))
             jo.put("layer_slug_s", geoserverLabel.toLowerCase());
@@ -190,7 +190,7 @@ public class DataGBJSON extends GeoBlacklightJSON{
     @Override
     protected JSONObject addBaseRecordInfo(){
         JSONObject jo = new JSONObject();
-        jo.put(RECORD_URL,  GeodisyStrings.urlSlashes(javaObject.getSimpleFieldVal(DVFieldNameStrings.RECORD_URL)));
+        jo.put(FULL_LAYER_DESCRIPTION,  GeodisyStrings.urlSlashes(javaObject.getSimpleFieldVal(DVFieldNameStrings.RECORD_URL)));
         jo.put(ISO_METADATA, END_XML_JSON_FILE_PATH + GeodisyStrings.urlSlashes((recordLabel) + "/" + ISO_METADATA_FILE_ZIP));
         return jo;
     }

@@ -3,8 +3,11 @@ package TestFiles;
 public class Tests {
 
     public void runTests(){
-        GDALTest gt = new GDALTest();
-        gt.run();
+        TestJSONParse tjp = new TestJSONParse();
+        tjp.run();
+
+        /*GDALTest gt = new GDALTest();
+        gt.run();*/
         /*DatasetProcessTest t = new DatasetProcessTest();
         t.run();*/
 

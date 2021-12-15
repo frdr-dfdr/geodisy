@@ -13,7 +13,7 @@ public class TestFRDRAPI {
     @Test
     public void getJSONRecords(){
         FRDRAPI f = new FRDRAPI();
-        LinkedList<SourceJavaObject> djos = f.callFRDRHarvester(true);
+        LinkedList<SourceJavaObject> djos = f.callFRDRHarvester("");
         for(SourceJavaObject s: djos){
             System.out.println(s.getSimpleFieldVal(RECORD_LABEL));
         }

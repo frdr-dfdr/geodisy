@@ -5,6 +5,7 @@ package BaseFiles;
  * and open the template in the editor.
  */
 
+import TestFiles.Test;
 import TestFiles.Tests;
 import _Strings.GeodisyStrings;
 import static _Strings.GeodisyStrings.*;
@@ -33,10 +34,12 @@ public class Main {
             dev = "Using the prod servers, is this correct?";
         GeodisyStrings.load();
         GeodisyTask geodisyTask = new GeodisyTask();
-        geodisyTask.run();
 
-        /*Tests tests = new Tests();
-        tests.runTests();*/
-
+        if(!TEST)
+            geodisyTask.run();
+        else {
+        Tests tests = new Tests();
+        tests.runTests();
+        }
     }
 }

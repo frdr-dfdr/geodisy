@@ -23,13 +23,13 @@ public class GeoBlacklightStrings {
     public static String GEOSERVER_WFS_LOCATION;
     public static String GEOSERVER_WMS_LOCATION;
     public final static String EXTERNAL_SERVICES = "dct_references_s";
-    public final static String RECORD_URL = "http://schema.org/url";
+    public final static String FULL_LAYER_DESCRIPTION = "http://schema.org/url";
     public final static String WMS = "http://www.opengis.net/def/serviceType/ogc/wms";
     public final static String WFS = "http://www.opengis.net/def/serviceType/ogc/wfs";
     public final static String DIRECT_FILE_DOWNLOAD = "http://schema.org/downloadUrl";
     public final static String ISO_METADATA = "http://lccn.loc.gov/sh85035852";
     public final static String ISO_METADATA_FILE_ZIP = "iso19139.zip";
-    public static String[] METADATA_DOWNLOAD_SERVICES = {RECORD_URL, WMS, WFS,DIRECT_FILE_DOWNLOAD,ISO_METADATA};
+    public static String[] METADATA_DOWNLOAD_SERVICES = {FULL_LAYER_DESCRIPTION, WMS, WFS,DIRECT_FILE_DOWNLOAD,ISO_METADATA};
     public final static String LAYER_ID = "layer_id_s";
 
     public static String getGeoDownloadUrl(DataverseGeoRecordFile dgrf){
@@ -62,7 +62,7 @@ public class GeoBlacklightStrings {
         GEOSERVER_REST = GEOSERVER_BASE + "rest/";
         GEOSERVER_WFS_LOCATION = GEOSERVER_DOWNLOAD_BASE +"wfs";
         GEOSERVER_WMS_LOCATION = GEOSERVER_DOWNLOAD_BASE +"wms";
-        METADATA_DOWNLOAD_SERVICES = new String[]{RECORD_URL, WMS, WFS,DIRECT_FILE_DOWNLOAD,ISO_METADATA};
+        METADATA_DOWNLOAD_SERVICES = new String[]{FULL_LAYER_DESCRIPTION, WMS, WFS,DIRECT_FILE_DOWNLOAD,ISO_METADATA};
 
     }
 }

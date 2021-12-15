@@ -7,6 +7,7 @@ import Crosswalking.XML.XMLGroups.IdentificationInfo;
 import Dataverse.DataverseJSONFieldClasses.Fields.CitationCompoundFields.*;
 import Dataverse.DataverseJSONFieldClasses.Fields.CitationSimpleJSONFields.SimpleCitationFields;
 import Dataverse.DataverseJavaObject;
+import _Strings.DVFieldNameStrings;
 import org.w3c.dom.Element;
 
 import java.util.List;
