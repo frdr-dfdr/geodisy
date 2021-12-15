@@ -24,11 +24,8 @@ public class Main {
         //RemoveRecord rr = new RemoveRecord();
         //rr.removeRecord();
         String dev;
-        if(args.length>0)
-            TEST = true;
-        else
-            TEST = false;
-        TEST = true;
+        TEST = args.length > 0;
+        //TEST = true;
         if(TEST)
             dev = "Using the dev servers, is this correct?";
         else
