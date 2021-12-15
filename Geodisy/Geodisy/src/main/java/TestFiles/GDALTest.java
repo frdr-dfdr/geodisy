@@ -2,7 +2,6 @@ package TestFiles;
 
 import Dataverse.GDAL;
 
-import javax.imageio.IIOException;
 import java.io.IOException;
 
 public class GDALTest implements Test{
