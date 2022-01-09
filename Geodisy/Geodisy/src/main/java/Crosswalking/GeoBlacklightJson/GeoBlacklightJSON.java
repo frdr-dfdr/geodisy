@@ -7,6 +7,7 @@ import Dataverse.DataverseGeoRecordFile;
 import Dataverse.DataverseJSONFieldClasses.Fields.DataverseJSONGeoFieldClasses.GeographicBoundingBox;
 import Dataverse.DataverseJavaObject;
 import Dataverse.DataverseRecordFile;
+import Dataverse.FindingBoundingBoxes.LocationTypes.BoundingBox;
 import Dataverse.SourceRecordFiles;
 import _Strings.GeodisyStrings;
 import org.json.JSONObject;
@@ -59,9 +60,9 @@ public abstract class GeoBlacklightJSON extends JSONCreator implements MetadataS
 
         }
         int total = list.size();
-        for(DataverseRecordFile drf:list){
-            createJSONFromFiles(drf, total);
-        }
+        BoundingBox bb = javaObject.getBoundingBox();
+        createJSONFromFiles(list, bb);
+
     }
 
     public void updateJSONs(){
@@ -89,17 +90,11 @@ public abstract class GeoBlacklightJSON extends JSONCreator implements MetadataS
 
     }
 
-    private void createJSONFromFiles(DataverseRecordFile drf, int total) {
-        boolean single = total == 1;
-        getRequiredFields(drf.getGBB(), total, drf.getBbCount());
-        getOptionalFields(drf,total);
+    private void createJSONFromFiles(List<DataverseRecordFile> drfs, BoundingBox fullBBox) {
+        getRequiredFields(fullBBox);
+        getOptionalFields(drfs);
         geoBlacklightJson = jo.toString();
-        String slash = GeodisyStrings.replaceSlashes("/");
-        if(!javaObject.getSimpleFields().getField(TITLE).isEmpty())
-            if (!single)
-                saveJSONToFile(geoBlacklightJson, doi, recordLabel + slash+drf.getBbCount());
-            else
-                saveJSONToFile(geoBlacklightJson, doi, recordLabel);
+        saveJSONToFile(geoBlacklightJson, doi, recordLabel);
     }
 
     public File genDirs(String doi, String localRepoPath) {
@@ -113,11 +108,11 @@ public abstract class GeoBlacklightJSON extends JSONCreator implements MetadataS
     public String getDoi(){
         return doi;
     }
-    protected abstract JSONObject getRequiredFields(GeographicBoundingBox gbb, int total, int bboxNumber);
+    protected abstract JSONObject getRequiredFields(BoundingBox gbb);
 
 
 
-    protected abstract JSONObject getOptionalFields(DataverseRecordFile drf, int totalRecordsInStudy);
+    protected abstract JSONObject getOptionalFields(List<DataverseRecordFile> drfs);
     protected abstract JSONObject addDataDownloadOptions(GeographicBoundingBox bb, JSONObject ja, boolean isOnGeoserver); //for records with datasetfiles
     protected abstract JSONObject addBaseRecordInfo(); //adds the base metadata external services that all records need regardless of existence of datafiles
     protected abstract void saveJSONToFile(String json, String doi, String folderName);

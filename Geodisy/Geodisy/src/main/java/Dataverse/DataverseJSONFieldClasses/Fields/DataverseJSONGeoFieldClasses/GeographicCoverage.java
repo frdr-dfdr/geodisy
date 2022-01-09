@@ -12,7 +12,14 @@ import java.util.*;
 import static _Strings.DVFieldNameStrings.*;
 
 public class GeographicCoverage extends CompoundJSONField {
-    private String givenCountry, givenProvince, givenCity, otherGeographicCoverage, doi, commonCountry, commonProvince, commonCity;
+    private String givenCountry;
+    private String givenProvince;
+    private String givenCity;
+    private String otherGeographicCoverage;
+    private final String doi;
+    private String commonCountry;
+    private String commonProvince;
+    private String commonCity;
     private Country countryObject;
     private Province provinceObject;
     private City cityObject;
@@ -142,17 +149,14 @@ public class GeographicCoverage extends CompoundJSONField {
     public BoundingBox getBoundingBox(){
         if(this.cityObject!=null){
             if(cityObject.hasBoundingBox()) {
-                cityObject.getBoundingBox().setPlace(cityObject.getCommonName());
                 return cityObject.getBoundingBox();
             }
         }else if(provinceObject!=null){
             if(provinceObject.hasBoundingBox()) {
-                provinceObject.getBoundingBox().setPlace(provinceObject.getCommonName());
                 return provinceObject.getBoundingBox();
             }
         }else if(countryObject!=null){
             if(countryObject.hasBoundingBox()) {
-                countryObject.getBoundingBox().setPlace(countryObject.getCommonName());
                 return countryObject.getBoundingBox();
             }
         }

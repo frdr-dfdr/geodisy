@@ -39,6 +39,17 @@ public class GeographicBoundingBox extends CompoundJSONField {
         this.bb = bb;
     }
 
+    public GeographicBoundingBox(GeographicBoundingBox gbb){
+        this.bb = gbb.bb;
+        this.projection = gbb.projection;
+        this.fileName = gbb.fileName;
+        this.geometryType = gbb.geometryType;
+        this.geoserverLabel = gbb.geoserverLabel;
+        this.generated = gbb.generated;
+        this.fileNumber = gbb.fileNumber;
+        this.fileURL = gbb.fileURL;
+    }
+
     public String getFileNumber(){
         if(fileNumber==0)
             return "0";
@@ -56,7 +67,7 @@ public class GeographicBoundingBox extends CompoundJSONField {
         return bb.isWFS();
     }
     //TODO make sure we create a Geoserver Location for each file
-    public String getGeoserverLocation() {
+    public String getGeoserverLabel() {
         int colon = geoserverLabel.lastIndexOf(":");
         String answer;
         if(colon==-1)
@@ -256,7 +267,7 @@ public class GeographicBoundingBox extends CompoundJSONField {
                 return getProjection();
             case GEOSERVER_LABEL:
             case BASE_GEOSERVER_LABEL:
-                return geoserverLabel;
+                return getGeoserverLabel();
             case GEOMETRY:
                 return geometryType;
             case FILE_URL:
@@ -278,14 +289,14 @@ public class GeographicBoundingBox extends CompoundJSONField {
         geoserverLabel = value;
     }
 
-    private String getProjection() {
+    public String getProjection() {
         return projection;
     }
     private void setProjection(String s){
         projection = s;
     }
 
-    private String getFileName() {
+    public String getFileName() {
         return fileName;
     }
 
@@ -344,10 +355,10 @@ public class GeographicBoundingBox extends CompoundJSONField {
     private void setWidth(String value) {
         bb.setWidth(value);
     }
-    private String getWidth() {
+    public String getWidth() {
         return bb.getWidth();
     }
-    private String getHeight() {
+    public String getHeight() {
         return bb.getHeight();
     }
 

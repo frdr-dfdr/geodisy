@@ -13,6 +13,7 @@ import Dataverse.DataverseJSONFieldClasses.Fields.DataverseJSONGeoFieldClasses.G
 import Dataverse.DataverseJavaObject;
 import Dataverse.DataverseRecordFile;
 import Dataverse.FindingBoundingBoxes.LocationTypes.BoundingBox;
+import netscape.javascript.JSObject;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -39,28 +40,19 @@ public class DataGBJSON extends GeoBlacklightJSON{
         recordLabel = djo.getSimpleFieldVal(RECORD_LABEL);
     }
     @Override
-    protected JSONObject getRequiredFields(GeographicBoundingBox gbb, int total,int boundingBoxNumber){
-        String number = gbb.getFileNumber();
+    protected JSONObject getRequiredFields(BoundingBox bb){
+
         jo.put("geoblacklight_version","1.0");
         jo.put("dc_identifier_s", GeodisyStrings.urlSlashes(javaObject.getSimpleFieldVal(RECORD_LABEL)));
-        String geoserverLabel = getGeoserverLabel(gbb);
-        if(((geoserverLabel.startsWith("r00")||geoserverLabel.startsWith("v00")) && geoserverLabel.length()==11)||(boundingBoxNumber==0))
-            jo.put("layer_slug_s", geoserverLabel.toLowerCase());
-        else
-            jo.put("layer_slug_s", geoserverLabel.toLowerCase() + padZeros(boundingBoxNumber, total));
+        jo.put("layer_slug_s", doi);
 
 
         String name = javaObject.getSimpleFields().getField(TITLE);
         if(name.isEmpty()) {
-            logger.error("Somehow creating a GBL json without a study title: " + javaObject.getPID());
+            logger.error("Somehow creating a GBL json without a study title: " + doi);
             name = "Unknown Study Name";
         }
-        if(total>1) {
-            number = padZeros(number,total);
-            jo.put("dc_title_s", name + " (" + number + " of " + total + ")");
-        }
-        else
-            jo.put("dc_title_s", name);
+        jo.put("dc_title_s", name);
         String license = javaObject.getSimpleFields().getField(LICENSE);
         if(license.toLowerCase().equals("public")||license.isEmpty())
             jo.put("dc_rights_s","Public");
@@ -68,16 +60,15 @@ public class DataGBJSON extends GeoBlacklightJSON{
             jo.put("dc_rights_s","Restricted");
         jo.put("dct_provenance_s",javaObject.getSimpleFields().getField(PUBLISHER));
         jo.put("dc_publisher_s",javaObject.getSimpleFields().getField(PUBLISHER));
-        jo.put("solr_geom",determineGeomentry(gbb.getBB()));
+        jo.put("solr_geom",determineGeomentry(bb));
         return jo;
     }
 
     private String determineGeomentry(BoundingBox bb) {
-        //TODO Uncomment when GBL is ready for MULTIPOLYGONS
-        //if(bb.getLongWest()<bb.getLongEast())
+        if(bb.getLongWest()<bb.getLongEast())
             return "ENVELOPE(" + getBBString(bb) + ")";
-        /*else
-            return "MULTIPOLYGON(((" + addPolygon(bb.getLongWest(),180d,bb.getLatNorth(),bb.getLatSouth()) + ")), ((" + addPolygon(-180d, bb.getLongEast(), bb.getLatNorth(), bb.getLatSouth()) + ")))";*/
+        else
+            return "MULTIPOLYGON(((" + addPolygon(bb.getLongWest(),180d,bb.getLatNorth(),bb.getLatSouth()) + ")), ((" + addPolygon(-180d, bb.getLongEast(), bb.getLatNorth(), bb.getLatSouth()) + ")))";
     }
 
     private String addPolygon(double west, double east, double north, double south) {
@@ -128,20 +119,40 @@ public class DataGBJSON extends GeoBlacklightJSON{
         return number;
     }
 
-    private void addRecommendedFields(String geoserverLabel, GeographicBoundingBox gbb, boolean isOnGeoserver, int count, int total) {
-        getDSDescriptionSingle();
-        if(!gbb.getField(GEOMETRY).isEmpty())
-            jo.put("layer_geom_type_s",gbb.getField(GEOMETRY));
-        JSONObject j = addBaseRecordInfo();
-        if(!gbb.getField(GEOMETRY).equals(UNDETERMINED) && USE_GEOSERVER) {
-            j = addDataDownloadOptions(gbb, j, isOnGeoserver);
+    private void addRecommendedFields(List<DataverseRecordFile> drfs) {
+        JSONObject jfile = new JSONObject();
+        JSONObject jfileID = new JSONObject();
+        JSONArray jgeom = new JSONArray();
+        for(DataverseRecordFile drf: drfs) {
+            GeographicBoundingBox gbb = drf.getGBB();
+            getFileType(drf);
+            if (gbb.hasBB()) {
+                jgeom.put(gbb.getField(GEOMETRY));
+                jfileID.put("geo", gbb.getField(GEOMETRY));
+                if (gbb.getField(GEOMETRY).equals(UNDETERMINED)) {
+                    jfileID.put("title", "Metadata #" + drf.getGBBFileNumber());
+                } else
+                    jfileID.put("title", drf.getFileName());
+                jfileID.put(("bbox"), determineGeomentry(gbb.getBB()));
+                jfileID.put("height", gbb.getHeight());
+                jfileID.put("width", gbb.getWidth());
+                jfileID.put("projection", gbb.getProjection());
+                jfileID.put("fileURL", gbb.getField(FILE_URL));
+                addDataDownloadOptions(gbb,jfileID,gbb.isGeneratedFromGeoFile());
+                jfile.put(drf.getGeoserverLabel(), jfileID);
+            }
         }
+        //layer_geom_type_sm is a customized layer_geom_s in GBL as we are now allowing more than one bbox per record
+        jo.put("layer_geom_type_sm", jgeom);
+
+        //layers_file_info_sm is a new custom nested field that holds the bbox, title, and geoserver label for each
+        jo.put("layers_file_info_sm", jfile);
+        getDSDescriptionSingle();
+
+        JSONObject j = addBaseRecordInfo();
+
         jo.put(EXTERNAL_SERVICES, j.toString());
-        if(!geoserverLabel.isEmpty())
-            if(count!=0)
-                jo.put("layer_id_s", geoserverLabel+padZeros(count, total));
-            else
-                jo.put("layer_id_s", geoserverLabel);
+        jo.put("layer_id_s", doi);
     }
 
     private void updateRecommendedFields(){
@@ -197,23 +208,26 @@ public class DataGBJSON extends GeoBlacklightJSON{
 
     //TODO, check I am getting all the optional fields I should be
     @Override
-    protected JSONObject getOptionalFields(DataverseRecordFile drf, int totalRecordsInStudy) {
-        GeographicBoundingBox gbb = drf.getGBB();
-        String geoserverLabel = getGeoserverLabel(gbb).toLowerCase();
-        getFileType(drf);
-        addRecommendedFields(geoserverLabel, gbb, drf.isOnGeoserver(),drf.getBbCount(), totalRecordsInStudy);
+    protected JSONObject getOptionalFields(List<DataverseRecordFile> drfs) {
+        addRecommendedFields(drfs);
+        getBoundingBoxes(drfs);
         getAuthors();
         getIssueDate();
         getLanguages();
-        getPlaceNames(gbb);
+        getPlaceNames();
         getSubjects();
         getType();
-        getRelatedRecords(drf, totalRecordsInStudy);
         getModifiedDate();
         getSolrYear();
         getTemporalRange();
 
         return jo;
+    }
+
+    private void getBoundingBoxes(List<DataverseRecordFile> drfs) {
+        for(DataverseRecordFile drf: drfs) {
+
+        }
     }
 
     @Override
@@ -336,7 +350,7 @@ public class DataGBJSON extends GeoBlacklightJSON{
             String format = getFileTypeName(drf.getTranslatedTitle());
             if(format.isEmpty())
                 format = "File";
-            jo.put("dc_format_s", format);
+            jo.put("dc_format_sm", format);
         }
     }
 
@@ -426,7 +440,7 @@ public class DataGBJSON extends GeoBlacklightJSON{
         }
         jo.put("dc_creator_sm",ja);
     }
-    private void getPlaceNames(GeographicBoundingBox gbb){
+    private void getPlaceNames(){
         JSONArray ja =  new JSONArray();
         HashSet<String> placeNames = new HashSet<>();
         List<GeographicCoverage> places = javaObject.getGeoFields().getGeoCovers();
@@ -435,10 +449,7 @@ public class DataGBJSON extends GeoBlacklightJSON{
                 placeNames.add(place);
             }
         }
-        if(!gbb.getField(PLACE).isEmpty()){
-            ja.put(gbb.getField(PLACE));
-            jo.put("dct_spatial_sm",ja);
-        } else if(placeNames.size()>0) {
+        if(placeNames.size()>0) {
             for (String s : placeNames) {
                 ja.put(s);
             }
