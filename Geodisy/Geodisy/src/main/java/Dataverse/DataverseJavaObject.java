@@ -5,7 +5,6 @@ import BaseFiles.HTTPGetCall;
 import Dataverse.FindingBoundingBoxes.LocationTypes.BoundingBox;
 import _Strings.GeodisyStrings;
 import Dataverse.DataverseJSONFieldClasses.Fields.DataverseJSONGeoFieldClasses.*;
-import Dataverse.DataverseJSONFieldClasses.Fields.DataverseJSONSocialFieldClasses.SocialFields;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -51,7 +50,6 @@ public class DataverseJavaObject extends SourceJavaObject {
         }
         hasContent=true;
         geoFields = new GeographicFields(this);
-        socialFields = new SocialFields(this);
     }
 
     /**
@@ -90,23 +88,7 @@ public class DataverseJavaObject extends SourceJavaObject {
                 }
         }
     }
-    @Override
-    public void parseSocialFields(JSONArray socialFieldsArray){
-        for(Object o: socialFieldsArray){
-            JSONObject jo = (JSONObject) o;
-            socialFields = socialFields.setFields(jo);
-        }
 
-    }
-
-   /* //Uncomment if we decide to include the Journal Field Metadata block
-    @Override
-    public void parseJournalFields(JSONArray journalFieldsArray) {
-        for (Object o : journalFieldsArray) {
-            JSONObject jo = (JSONObject) o;
-            this.journalFields.setFields(jo);
-        }
-    }*/
     /**
      * Gets the File metadata for the record.
      * @param fileFieldsArray

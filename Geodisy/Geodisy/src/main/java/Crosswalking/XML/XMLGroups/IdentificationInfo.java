@@ -7,7 +7,6 @@ import Dataverse.DataverseJSONFieldClasses.CompoundDateJSONField;
 import Dataverse.DataverseJSONFieldClasses.Fields.CitationCompoundFields.*;
 import Dataverse.DataverseJSONFieldClasses.Fields.CitationSimpleJSONFields.SimpleCitationFields;
 import Dataverse.DataverseJSONFieldClasses.Fields.DataverseJSONGeoFieldClasses.GeographicFields;
-import Dataverse.DataverseJSONFieldClasses.Fields.DataverseJSONSocialFieldClasses.SocialFields;
 import Dataverse.DataverseJavaObject;
 import Dataverse.DataverseRecordFile;
 import org.w3c.dom.Element;
@@ -46,8 +45,6 @@ public class IdentificationInfo extends SubElement {
     CitationFields cf;
     SimpleCitationFields simpleCF;
     GeographicFields geoCF;
-    SocialFields socialCF;
-    //JournalFields journalCF;
     String noteText,  distDate;
     XMLStack stack;
     XMLStack secondaryStack;
@@ -125,9 +122,6 @@ public class IdentificationInfo extends SubElement {
         GeographicInfo gi = new GeographicInfo(djo, doc, levelJ);
         levelJ = gi.getFields();
 
-        SocialFieldInfo sfi = new SocialFieldInfo(djo, doc, levelJ);
-        if(!sfi.dataCollector.isEmpty())
-            levelJ =  sfi.getFields();
 
         //Journal metadata is for Journal Dataverses
 /*        JournalInfo ji = new JournalInfo(djo,doc,levelJ);

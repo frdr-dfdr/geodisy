@@ -6,7 +6,6 @@ import _Strings.GeodisyStrings;
 import Dataverse.DataverseJSONFieldClasses.Fields.CitationCompoundFields.CitationFields;
 import Dataverse.DataverseJSONFieldClasses.Fields.DataverseJSONGeoFieldClasses.GeographicFields;
 import Dataverse.DataverseJSONFieldClasses.Fields.CitationSimpleJSONFields.SimpleCitationFields;
-import Dataverse.DataverseJSONFieldClasses.Fields.DataverseJSONSocialFieldClasses.SocialFields;
 import Dataverse.FindingBoundingBoxes.LocationTypes.BoundingBox;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,8 +21,6 @@ import static _Strings.DVFieldNameStrings.*;
 public abstract class SourceJavaObject {
     protected CitationFields citationFields;
     protected GeographicFields geoFields;
-    protected SocialFields socialFields;
-    //protected JournalFields journalFields;
     protected LinkedList<DataverseRecordFile> dataFiles; //Stores the datafiles
     protected LinkedList<DataverseGeoRecordFile> geoDataFiles; //Stores the datafiles that are geospatial in nature
     protected LinkedList<DataverseGeoRecordFile> geoDataMeta;
@@ -33,7 +30,6 @@ public abstract class SourceJavaObject {
 
     public abstract void parseCitationFields(JSONObject citationFieldsArray);
     public abstract void parseGeospatialFields(JSONArray geoFieldsArray);
-    public abstract void parseSocialFields(JSONArray socialFieldsArray);
     //Uncomment if we decide to include Journal Fields metadata block
     // public abstract void parseJournalFields(JSONArray journalFieldsArray);
     public abstract void parseFiles(JSONArray fileFieldsArray);
@@ -51,7 +47,6 @@ public abstract class SourceJavaObject {
         this.geoDataFiles = new LinkedList<>();
         this.geoDataMeta = new LinkedList<>();
         this.geoFields = new GeographicFields();
-        this.socialFields = new SocialFields();
         //this.journalFields = new JournalFields();
         this.server = server;
         hasContent = false;
@@ -193,10 +188,6 @@ public abstract class SourceJavaObject {
 
     public boolean hasContent(){
         return hasContent;
-    }
-
-    public SocialFields getSocialFields(){
-        return socialFields;
     }
 
     public String getDOIProtocal(){
