@@ -76,10 +76,18 @@ public class FRDRAPI extends SourceAPI{
                                 System.out.println("Downloading Files");
                                 djo.setGeoDataFiles(djo.downloadFiles());
                             }
+                            //Delete from here
                             if(djo.geoDataFiles.size()>0||djo.geoDataMeta.size()>0)
                                 djo.updateRecordFileNumbers();
                             if(djo.geoDataFiles.size()>0)
                                 djo.updateGeoserver();
+                            //to here once we are sending all bounding boxes to the FRDR Harvester
+                            //Then uncomment the below
+                            /*if(djo.geoDataFiles.size()>0) {
+                                djo.updateRecordFileNumbers();
+                                djo.updateGeoserver();
+                                djo.updateHarvesterWithBBoxes();
+                            }*/
                         }
                     }
                     if (djo.hasBoundingBox()) {

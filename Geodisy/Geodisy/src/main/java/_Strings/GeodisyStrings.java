@@ -45,6 +45,7 @@ public class GeodisyStrings {
         HARVESTER_BASE = (TEST)? DEV_HARVESTER_BASE: PROD_HARVESTER_BASE;
         EXPORTER = HARVESTER_BASE + "exporter";
         MARK_AS_PROCESSED = HARVESTER_BASE + "records/";
+        ADD_BOUNDING_BOX = HARVESTER_BASE + "bboxes/";
         GeoBlacklightStrings.load();
         XMLStrings.load();
         GeoserverStrings.load();
@@ -95,6 +96,7 @@ public class GeodisyStrings {
         public static String HARVESTER_BASE;
         public static String EXPORTER;
         public static String MARK_AS_PROCESSED;
+        public static String ADD_BOUNDING_BOX;
 
         public static String harvesterBase(){
             if (TEST) {

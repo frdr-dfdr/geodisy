@@ -9,8 +9,10 @@ import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -291,6 +293,43 @@ public class DataverseJavaObject extends SourceJavaObject {
             System.out.println("Finished Adding file to geoserver");
         }
         setGeoDataFiles(onGeoserver);
+    }
+    public void updateHarvesterWithBBoxes() {
+        //TODO Check to make sure we are sending everything the harvester needs
+        try {
+            JSONObject jo = new JSONObject();
+            JSONArray boxes = new JSONArray();
+            for (DataverseGeoRecordFile rf : geoDataFiles) {
+                GeographicBoundingBox gbb = rf.gbb;
+                BoundingBox bb = gbb.getBB();
+                JSONObject box = new JSONObject();
+                box.put("northLat", bb.getLatNorth());
+                box.put("southLat", bb.getLatSouth());
+                box.put("eastLon", bb.getLongEast());
+                box.put("westLon", bb.getLongWest());
+                box.put("geoserverID",gbb.getBaseGeoserverLocation());
+                box.put("file_name",gbb.getField(FILE_NAME));
+                boxes.put(box);
+            }
+            jo.put("bboxes", boxes);
+
+            URL url = new URL(ADD_BOUNDING_BOX + getPID());
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("PUT");
+            conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            OutputStream os = conn.getOutputStream();
+            os.write(jo.toString().getBytes(StandardCharsets.UTF_8));
+            os.close();
+            InputStream in = new BufferedInputStream(conn.getInputStream());
+            String result = org.apache.commons.io.IOUtils.toString(in, StandardCharsets.UTF_8);
+            in.close();
+            conn.disconnect();
+
+        }catch(IOException e){
+            logger.error("Something went wrong trying to call FRDR to add file-based bounding boxes to record #" + getPID() + " as processed by Geodisy");
+        }
     }
     class SortByFileName implements Comparator<DataverseGeoRecordFile>{
         public int compare(DataverseGeoRecordFile a, DataverseGeoRecordFile b){
