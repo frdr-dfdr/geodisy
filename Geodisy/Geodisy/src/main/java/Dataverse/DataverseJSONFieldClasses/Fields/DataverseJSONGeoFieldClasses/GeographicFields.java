@@ -263,26 +263,7 @@ public class GeographicFields extends MetadataType {
         geoBBoxes.add(g);
         setFullBoundingBox();
     }
-
-    public void addBBForAntiMeridianCrossing(List<GeographicBoundingBox> bboxes, GeographicBoundingBox gBB) {
-        double east = gBB.getEastLongDub();
-        double west = gBB.getWestLongDub();
-        double north = gBB.getNorthLatDub();
-        double south = gBB.getSouthLatDub();
-
-        if(east<west && east!=-181 && west!=181){
-            GeographicBoundingBox second = new GeographicBoundingBox(gBB.getField(GEOSERVER_LABEL));
-            second.setNorthLatitude(String.valueOf(north));
-            second.setSouthLatitude(String.valueOf(south));
-            second.setWestLongitude(String.valueOf(west));
-            second.setEastLongitude("180");
-            bboxes.add(second);
-            gBB.setWestLongitude("-180");
-        }
-        bboxes.add(gBB);
-        setGeoBBoxes(bboxes);
-    }
-
+    
     public LinkedList<GeographicBoundingBox> getBBoxesForJSON(){
         LinkedList<GeographicBoundingBox> gdal = new LinkedList<>();
         LinkedList<GeographicBoundingBox> metadata = new LinkedList<>();
