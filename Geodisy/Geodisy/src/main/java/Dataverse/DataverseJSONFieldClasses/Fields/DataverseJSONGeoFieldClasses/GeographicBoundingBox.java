@@ -222,9 +222,6 @@ public class GeographicBoundingBox extends CompoundJSONField {
             case HEIGHT:
                 setHeight(value);
                 break;
-            case PLACE:
-                bb.setPlace(value);
-                break;
             case GDAL_STRING:
                 setGDALString(value);
                 break;
@@ -268,8 +265,6 @@ public class GeographicBoundingBox extends CompoundJSONField {
                 return getWidth();
             case HEIGHT:
                 return getHeight();
-            case PLACE:
-                return bb.getPlace();
             case GDAL_STRING:
                 return gdalString;
             default:

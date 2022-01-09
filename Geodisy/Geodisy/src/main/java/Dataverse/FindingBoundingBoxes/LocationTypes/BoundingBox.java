@@ -11,11 +11,8 @@ public class BoundingBox implements Serializable {
     private double longEast = 361;
     private boolean generated = false;
     private String fileName = "";
-    private String geometryType = UNDETERMINED;
-    private String geoserverLabel = "";
     private String width = "0";
     private String height = "0";
-    private String place = "";
 
     /**
      *
@@ -152,14 +149,6 @@ public class BoundingBox implements Serializable {
         this.fileName = fileName;
     }
 
-    public void setGeometryType(String geometryType) {
-        this.geometryType = geometryType;
-    }
-
-    public void setGeoserverLabel(String s){
-        geoserverLabel = s;
-    }
-
 
     public boolean isWMS() {
         for(String s: PREVIEWABLE_FILE_EXTENSIONS) {
@@ -193,11 +182,4 @@ public class BoundingBox implements Serializable {
         this.height = height;
     }
 
-    public String getPlace() {
-        return place;
-    }
-
-    public void setPlace(String place) {
-        this.place = place;
-    }
 }

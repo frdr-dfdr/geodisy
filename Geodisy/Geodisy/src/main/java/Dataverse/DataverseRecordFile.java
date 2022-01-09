@@ -311,10 +311,7 @@ public class DataverseRecordFile {
     }
 
     public String getGeoserverLabel(){
-        String answer = gbb.getField(GEOSERVER_LABEL);
-        if(Character.isDigit(answer.charAt(0)))
-            answer = "g_" + answer;
-        return answer;
+        return gbb.getField(GEOSERVER_LABEL);
     }
 
     public String getBaseGeoserverLabel(){
