@@ -47,13 +47,12 @@ public abstract class GeoBlacklightJSON extends JSONCreator implements MetadataS
         int countFile = geoFiles.size();
         int countMeta = geoMeta.size();
         System.out.println("DOI = " + doi + " . Number geoFile: " + countFile + " . Number geoMeta: " + countMeta);
-        boolean geoMoreThanMeta = countFile >= countMeta;
-        if(!geoMoreThanMeta && countFile>0)
-            logger.info("More bounding boxes came from the metadata than the files, but there were file-generated bounding boxes as well. Check " + doi + " to make sure we shouldn't actually be using the files instead", javaObject);
-        List<DataverseGeoRecordFile> list = geoMoreThanMeta? geoFiles : geoMeta;
+        List<DataverseRecordFile> list = new LinkedList<>();
+        list.addAll(geoFiles);
+        list.addAll(geoMeta);
         if(list.size()>1){
             int count = 1;
-            for(DataverseGeoRecordFile d:list){
+            for(DataverseRecordFile d:list){
                 d.setBbCount(count);
                 count++;
             }
