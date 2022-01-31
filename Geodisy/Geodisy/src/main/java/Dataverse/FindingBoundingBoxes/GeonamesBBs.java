@@ -135,24 +135,42 @@ public class GeonamesBBs extends FindBoundBox {
             if (!givenProvince.isEmpty()){
                 if(!givenCity.isEmpty()) {
                     gbb = new GeographicBoundingBox(doi, getDVBoundingBox(givenCountry, givenProvince, givenCity));
+                    gbb.setCountry(givenCountry);
+                    gbb.setProvince(givenProvince);
+                    gbb.setCity(givenCity);
+                    gbb.setOther(other);
                     geoBBs.add(gbb);
                     if(second){
                         gbb = new GeographicBoundingBox(doi, getDVBoundingBox(commonCountry, commonProvince, commonCity));
+                        gbb.setCountry(commonCountry);
+                        gbb.setProvince(commonProvince);
+                        gbb.setCity(commonCity);
+                        gbb.setOther(other);
                         geoBBs.add(gbb);
                     }
                 }else {
                     gbb = new GeographicBoundingBox(doi, getDVBoundingBox(givenCountry, givenProvince));
+                    gbb.setCountry(givenCountry);
+                    gbb.setProvince(givenProvince);
+                    gbb.setOther(other);
                     geoBBs.add(gbb);
                     if (second) {
                         gbb = new GeographicBoundingBox(doi, getDVBoundingBox(commonCountry, commonProvince));
+                        gbb.setCountry(commonCountry);
+                        gbb.setProvince(commonProvince);
+                        gbb.setOther(other);
                         geoBBs.add(gbb);
                     }
                 }
             }else {
                 gbb = new GeographicBoundingBox(doi, getDVBoundingBox(givenCountry));
+                gbb.setCountry(givenCountry);
+                gbb.setOther(other);
                 geoBBs.add(gbb);
                 if (second) {
                     gbb = new GeographicBoundingBox(doi, getDVBoundingBox(commonCountry));
+                    gbb.setCountry(commonCountry);
+                    gbb.setOther(other);
                     geoBBs.add(gbb);
                 }
             }

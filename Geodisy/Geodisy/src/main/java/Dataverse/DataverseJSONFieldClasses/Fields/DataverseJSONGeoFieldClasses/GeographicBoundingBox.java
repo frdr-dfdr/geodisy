@@ -17,6 +17,10 @@ public class GeographicBoundingBox extends CompoundJSONField {
     private boolean generated = false;
     private int fileNumber = 0;
     String fileURL = "";
+    String country = "";
+    String province = "";
+    String city = "";
+    String other = "";
 
     public String getGDALString() {
         return gdalString;
@@ -372,5 +376,39 @@ public class GeographicBoundingBox extends CompoundJSONField {
                 setHeight(gdalString.substring(end + 1, coord));
             }
         }
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setOther(String other) {
+        this.other = other;
+    }
+
+    public String getLocation(){
+        String answer = "";
+        if(!country.isEmpty()){
+            answer+= country;
+            if(!province.isEmpty()){
+                answer = province + "; " + answer;
+                if(!city.isEmpty()){
+                    answer = city + "; " + answer;
+                    if(!other.isEmpty())
+                        answer =  other + "; " + answer;
+                }
+            }
+        }else if(!other.isEmpty())
+            answer = other;
+        return answer;
+
     }
 }

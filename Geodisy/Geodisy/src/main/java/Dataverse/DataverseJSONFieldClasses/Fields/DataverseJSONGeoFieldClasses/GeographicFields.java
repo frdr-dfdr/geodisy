@@ -65,12 +65,32 @@ public class GeographicFields extends MetadataType {
                     geoCovers.add(geographicCoverage);
                     BoundingBox bb = geographicCoverage.getBoundingBox();
                     if(bb.hasBoundingBox()) {
-                        geoBBoxes.add(new GeographicBoundingBox(doi, geographicCoverage.getBoundingBox()));
-                        gbb = new GeographicBoundingBox(doi,bb);
-                        drf = new DataverseGeoRecordFile(doi, gbb);
+                        GeographicBoundingBox gb = new GeographicBoundingBox(doi, geographicCoverage.getBoundingBox());
+                        String gCountry = geographicCoverage.getField(GIVEN_COUNTRY);
+                        gb.setCountry(gCountry);
+                        String gProvince = geographicCoverage.getField(GIVEN_PROVINCE);
+                        gb.setProvince(gProvince);
+                        String gCity = geographicCoverage.getField(GIVEN_CITY);
+                        gb.setCity(gCity);
+                        String other = geographicCoverage.getField(OTHER_GEO_COV);
+                        gb.setOther(other);
+                        String cCountry = geographicCoverage.getField(COMMON_COUNTRY);
+                        String cProvince = geographicCoverage.getField(COMMON_PROVINCE);
+                        String cCity = geographicCoverage.getField(COMMON_CITY);
+                        geoBBoxes.add(gb);
+                        drf = new DataverseGeoRecordFile(doi, gb);
                         incrementCounter();
                         drf.setFileNumber(djo.getGeoDataMeta().size()+1);
                         djo.addGeoDataMeta(drf);
+                        if((!cCountry.equals(gCountry) && !cCountry.isEmpty())||(!cProvince.equals(gProvince) && !cProvince.isEmpty())||(!cCity.equals(gCity) && !cCity.isEmpty())){
+                            gb = new GeographicBoundingBox(doi, geographicCoverage.getBoundingBox());
+                            gb.setCountry(cCountry);
+                            gb.setProvince(cProvince);
+                            gb.setCity(cCity);
+                            gb.setOther(other);
+                            drf = new DataverseGeoRecordFile(doi, gb);
+                            djo.addGeoDataMeta(drf);
+                        }
                     }
                 }
                 break;
