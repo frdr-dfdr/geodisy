@@ -225,7 +225,29 @@ public class DataGBJSON extends GeoBlacklightJSON{
     }
 
     private void getBoundingBoxes(List<DataverseRecordFile> drfs) {
+        JSONArray bbs = new JSONArray();
+
+        //Get BBoxes that were either entered or are from files
         for(DataverseRecordFile drf: drfs) {
+            JSONObject o = new JSONObject();
+            GeographicBoundingBox gbb = drf.getGBB();
+            o.put("west",gbb.getWestLongitude());
+            o.put("east", gbb.getEastLongitude());
+            o.put("north", gbb.getNorthLatitude());
+            o.put("south",gbb.getSouthLatitude());
+            if(!gbb.getFileName().equals("")) {
+                o.put("name", gbb.getFileName());
+                o.put("geometry_type", gbb.getField(GEOMETRY));
+                o.put("bbox_type","file");
+            }else if(gbb.getLocation().isEmpty()) {
+                o.put("bbox_type", "bounding box");
+                o.put("name","NSEW: " + gbb.getNorthLatitude() + ", " + gbb.getSouthLatitude() + ", " + gbb.getEastLongitude() + ", " + gbb.getWestLongitude());
+            }
+            else{
+                o.put("bbox_type","bounding box");
+                o.put("name", gbb.getLocation());
+            }
+            bbs.put(o);
 
         }
     }
@@ -509,4 +531,5 @@ public class DataGBJSON extends GeoBlacklightJSON{
         }
 
     }
+
 }
