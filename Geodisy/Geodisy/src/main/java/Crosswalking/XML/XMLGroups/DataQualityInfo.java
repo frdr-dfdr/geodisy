@@ -13,7 +13,6 @@ import java.util.LinkedList;
 import static _Strings.GeodisyStrings.CHARACTER;
 import static _Strings.XMLStrings.*;
 import static _Strings.DVFieldNameStrings.*;
-import static _Strings.DVFieldNameStrings.ACCESS_TO_SOURCES;
 
 public class DataQualityInfo extends SubElement {
     public DataQualityInfo(DataverseJavaObject djo, XMLDocObject doc, Element root) {

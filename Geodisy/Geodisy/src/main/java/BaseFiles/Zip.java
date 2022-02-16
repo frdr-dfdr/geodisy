@@ -37,7 +37,7 @@ public class Zip {
     return true;
     }
 
-    private void writeToZipFile(File file, ZipOutputStream zipStream) throws FileNotFoundException, IOException{
+    private void writeToZipFile(File file, ZipOutputStream zipStream) throws IOException{
         File aFile = new File(file.getAbsolutePath());
         FileInputStream fis = new FileInputStream(aFile.getName());
         ZipEntry zipEntry = new ZipEntry(file.getAbsolutePath());

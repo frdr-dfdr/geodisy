@@ -7,11 +7,9 @@ import _Strings.GeodisyStrings;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Calendar;
 import java.util.LinkedList;
-import java.util.Stack;
 
 public class FolderFileParser {
     GeoLogger logger = new GeoLogger(this.getClass());

@@ -5,14 +5,12 @@
  */
 package Crosswalking;
 
-import Crosswalking.GeoBlacklightJson.DataGBJSON;
 import Crosswalking.XML.XMLTools.XMLDocObject;
 import Crosswalking.XML.XMLTools.ISOXMLGen;
 import Dataverse.DataverseJavaObject;
 import Dataverse.SourceJavaObject;
 
-import java.util.LinkedList;
-import java.util.List;
+import static _Strings.DVFieldNameStrings.RECORD_LABEL;
 
 /**
  * Output schema that will be then sent to Geoserver to be indexed for GeoBlacklight. Values for this will be
@@ -24,7 +22,7 @@ public class ISO_19139 extends ISO_Schema {
             DataverseJavaObject djo = (DataverseJavaObject) sJO;
             ISOXMLGen xmlGenerator = new ISOXMLGen(djo);
             XMLDocObject xmlDocObject = xmlGenerator.generateXMLFile();
-            saveXMLToFile(xmlDocObject.getDoc(),xmlDocObject.getDoi());
+            saveXMLToFile(xmlDocObject.getDoc(),sJO.getSimpleFieldVal(RECORD_LABEL));
             return xmlDocObject;
 
     }

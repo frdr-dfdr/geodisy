@@ -5,6 +5,7 @@ import Dataverse.DataverseJSONFieldClasses.Fields.CitationSimpleJSONFields.Date;
 import Dataverse.DataverseJSONFieldClasses.Fields.CitationSimpleJSONFields.SimpleCitationFields;
 
 import Dataverse.DataverseJSONFieldClasses.MetadataSimple;
+import _Strings.GeodisyStrings;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -234,16 +235,20 @@ public class CitationFields extends MetadataSimple {
         simpleCitationFields.setField(PUB_DATE, getValueDate(current,PUB_DATE));
         simpleCitationFields.setField(PUBLISHER, parseSimpleValue(current,PUBLISHER));
         simpleCitationFields.setField(PROTOCOL,parseSimpleValue(current,PROTOCOL));
-        simpleCitationFields.setField(IDENTIFIER,parseSimpleValue(current,IDENTIFIER));
+        simpleCitationFields.setField(PERSISTENT_ID,parseSimpleValue(current,PERSISTENT_ID));
         simpleCitationFields.setField(NEW_OR_NEW_FILES,parseSimpleValue(current,NEW_OR_NEW_FILES));
+        simpleCitationFields.setField(LICENSE,parseSimpleValue(current,LICENSE));
         current = getVersionSection(current);
-        simpleCitationFields.setField(PROD_DATE,getValueDate(current,PROD_DATE));
+
+        //Don't think we get these anymore
+        /*simpleCitationFields.setField(PROD_DATE,getValueDate(current,PROD_DATE));
         simpleCitationFields.setField(DEPOS_DATE,getValueDate(current,"createTime"));
         simpleCitationFields.setField(DIST_DATE,getValueDate(current,"releaseTime"));
-        simpleCitationFields.setField(LICENSE,parseSimpleValue(current,LICENSE));
+
         simpleCitationFields.setField(MAJOR_VERSION,parseSimpleValue(current,MAJOR_VERSION));
         simpleCitationFields.setField(MINOR_VERSION,parseSimpleValue(current,MINOR_VERSION));
-        simpleCitationFields.setField(LAST_MOD_DATE,parseSimpleValue(current,LAST_MOD_DATE));
+        simpleCitationFields.setField(LAST_MOD_DATE,parseSimpleValue(current,LAST_MOD_DATE));*/
+
         getTOSAndAccessFields(current);
 
     }
@@ -498,9 +503,16 @@ public class CitationFields extends MetadataSimple {
     }
 
     public String getPID(){
-        return simpleCitationFields.getPersistentID();
+        return simpleCitationFields.getField(PERSISTENT_ID);
     }
 
+    public String getLabel(){
+        return GeodisyStrings.getAuthority(getPURL(),getPID());
+    }
+
+    public String getPURL(){
+        return simpleCitationFields.getField(RECORD_URL);
+    }
     public boolean isNewOrHasNewFiles(){
         return simpleCitationFields.isNewOrNewFiles();
     }

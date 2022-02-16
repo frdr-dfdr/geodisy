@@ -1,6 +1,8 @@
 package Dataverse.DataverseJSONFieldClasses.Fields.CitationSimpleJSONFields;
 
 import Dataverse.DataverseJSONFieldClasses.JSONField;
+import _Strings.GeodisyStrings;
+
 import static _Strings.DVFieldNameStrings.*;
 
 public class SimpleCitationFields extends JSONField {
@@ -94,7 +96,7 @@ public class SimpleCitationFields extends JSONField {
     public void setField(String label, String value){
         switch(label) {
             case RECORD_URL:
-                setPersistentID(value);
+                setPersistentURL(value);
                 break;
             case TITLE:
                 setTitle(value);
@@ -224,7 +226,7 @@ public class SimpleCitationFields extends JSONField {
                 setStudyComp(value);
                 break;
             case PERSISTENT_ID:
-                setPersistentID(value);
+                setPID(value);
                 break;
             default:
                 errorParsing(this.getClass().getName(),label);
@@ -239,6 +241,8 @@ public class SimpleCitationFields extends JSONField {
                 return getPersistentID();
             case RECORD_URL:
                 return getPersistentURL();
+            case RECORD_LABEL:
+                return getRecordLabel();
             case TITLE:
                 return getTitle();
             case SUBTITLE:
@@ -288,6 +292,7 @@ public class SimpleCitationFields extends JSONField {
         }
 
     }
+
     private String getTermsAndAccessField(String fieldName) {
         switch (fieldName) {
             case TERMS_OF_USE:
@@ -336,12 +341,12 @@ public class SimpleCitationFields extends JSONField {
         return major*1000+minor;
     }
 
-    private void setPersistentID(String persistentURL) {
+    private void setPersistentURL(String persistentURL) {
         pURL = persistentURL;
-        String filteredDOI = filterURL(persistentURL);
-        if(filteredDOI.isEmpty())
-            logger.error("Something went wrong as the PERSISTENT_ID us wonky: " + persistentURL);
-        this.pID = filteredDOI;
+    }
+
+    private void setPID(String pID){
+        this.pID = pID;
     }
 
     private void setTitle(String title) {
@@ -421,10 +426,7 @@ public class SimpleCitationFields extends JSONField {
     }
 
     public void setNewOrNewFiles(String val){
-        if(val.equals("0"))
-            this.newOrNewFiles = false;
-        else
-            this.newOrNewFiles = true;
+        this.newOrNewFiles = !val.equals("0");
     }
 
 
@@ -512,6 +514,10 @@ public class SimpleCitationFields extends JSONField {
 
     public String getPersistentURL(){
         return pURL;
+    }
+
+    public String getRecordLabel(){
+        return GeodisyStrings.getAuthority(pURL,pID);
     }
 
     private String getVersionMajor() {

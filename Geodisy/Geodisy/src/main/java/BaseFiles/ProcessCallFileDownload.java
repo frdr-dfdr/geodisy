@@ -3,7 +3,6 @@ package BaseFiles;
 import java.io.*;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -29,7 +28,7 @@ public class ProcessCallFileDownload extends ProcessCall{
         }
 
         @Override
-        public String[] call() throws FileNotFoundException, IOException {
+        public String[] call() throws IOException {
             HTTPGetCall httpGetCall = new HTTPGetCall();
             httpGetCall.getFile(fileURL, fileName, path);
             return new String[0];

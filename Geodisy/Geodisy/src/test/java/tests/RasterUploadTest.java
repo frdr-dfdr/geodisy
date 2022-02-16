@@ -9,6 +9,7 @@ import GeoServer.GeoServerAPI;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
+import static _Strings.DVFieldNameStrings.RECORD_LABEL;
 import static _Strings.GeodisyStrings.TEST;
 
 public class RasterUploadTest {
@@ -19,7 +20,7 @@ public class RasterUploadTest {
         DataverseParser parser = new DataverseParser();
         JSONObject jo = new JSONObject(metadata);
         DataverseJavaObject djo = parser.parse(jo, "another fake server name");
-        DataverseRecordFile recordFile = new DataverseRecordFile(djo.getPID(), new GeographicBoundingBox(djo.getPID()));
+        DataverseRecordFile recordFile = new DataverseRecordFile(djo.getSimpleFieldVal(RECORD_LABEL), new GeographicBoundingBox(djo.getSimpleFieldVal(RECORD_LABEL)));
         recordFile.setOriginalTitle("1910_rectified.tif");
         recordFile.setTranslatedTitle("1910_rectified.tif");
         recordFile.setProjection("EPSG:32633");

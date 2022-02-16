@@ -1,8 +1,5 @@
 package Dataverse.FindingBoundingBoxes.LocationTypes;
 
-import BaseFiles.Geonames;
-import Dataverse.ExistingLocations;
-import Dataverse.FindingBoundingBoxes.GeonamesJSON;
 import Dataverse.FindingBoundingBoxes.Location;
 
 public class City extends Location {

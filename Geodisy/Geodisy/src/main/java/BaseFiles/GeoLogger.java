@@ -1,8 +1,15 @@
 package BaseFiles;
 
 import Dataverse.*;
-import org.apache.logging.log4j.LogManager;
+
+
+import org.apache.logging.log4j.*;
 import org.apache.logging.log4j.Logger;
+
+
+
+
+import static _Strings.DVFieldNameStrings.RECORD_LABEL;
 
 /**
  * Shell on top of a log4j logger
@@ -15,7 +22,7 @@ public class GeoLogger {
     }
 
     public GeoLogger(Class classType){
-        logger = LogManager.getLogger(classType);
+        logger = LogManager.getLogger(classType.getName());
     }
 
     public void error(String message){
@@ -29,7 +36,7 @@ public class GeoLogger {
         else {
             DataverseRecordInfo dri = new DataverseRecordInfo(djo, this.getName());
             ExistingCallsToCheck efc = ExistingCallsToCheck.getExistingCallsToCheck();
-            if (!efc.hasRecord(djo.getPID())) {
+            if (!efc.hasRecord(djo.getSimpleFieldVal(RECORD_LABEL))) {
                 efc.addOrReplaceRecord(dri, message);
             } else if (efc.isNewerRecord(dri, this.getName())) {
                 efc.addOrReplaceRecord(dri, message);

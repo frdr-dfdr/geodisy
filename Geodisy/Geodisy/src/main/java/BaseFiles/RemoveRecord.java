@@ -1,7 +1,6 @@
 package BaseFiles;
 
 import Dataverse.ExistingDatasetBBoxes;
-import _Strings.GeodisyStrings;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -16,7 +15,7 @@ public class RemoveRecord {
     fW.verifyFileExistence(EXISTING_DATASET_BBOXES);
     ExistingDatasetBBoxes existingDatasetBBoxes = ExistingDatasetBBoxes.getExistingHarvests();
     existingDatasetBBoxes.saveExistingSearchs(existingDatasetBBoxes.getbBoxes(), EXISTING_DATASET_BBOXES, "ExistingBBoxes");
-    String folderized = GeodisyStrings.removeHTTPSAndReplaceAuthority(record2Remove).replace(".","/");
+    String folderized = record2Remove;
     File file = new File(DATA_DIR_LOC + folderized);
         try {
         FileUtils.deleteDirectory(file);

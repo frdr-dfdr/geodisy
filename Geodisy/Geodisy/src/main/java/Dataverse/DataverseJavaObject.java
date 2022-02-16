@@ -2,11 +2,10 @@ package Dataverse;
 
 import BaseFiles.GeoLogger;
 import BaseFiles.HTTPGetCall;
-import BaseFiles.ProcessCall;
+import Dataverse.FindingBoundingBoxes.LocationTypes.BoundingBox;
 import _Strings.GeodisyStrings;
 import Dataverse.DataverseJSONFieldClasses.Fields.DataverseJSONGeoFieldClasses.*;
 import Dataverse.DataverseJSONFieldClasses.Fields.DataverseJSONSocialFieldClasses.SocialFields;
-import Dataverse.FindingBoundingBoxes.LocationTypes.BoundingBox;
 import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -16,9 +15,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 
 import static _Strings.GeodisyStrings.*;
@@ -117,6 +113,7 @@ public class DataverseJavaObject extends SourceJavaObject {
      */
     @Override
     public void parseFiles(JSONArray fileFieldsArray) {
+        String recordLabel = getSimpleFieldVal(RECORD_LABEL);
         for(Object o: fileFieldsArray){
             try {
                 JSONObject jo = (JSONObject) o;
@@ -136,25 +133,22 @@ public class DataverseJavaObject extends SourceJavaObject {
                         title = url.substring(fileName) + ".geojson";
                     }
 
-                    dRF = new DataverseRecordFile(title, citationFields.getPID(), url);
+                    dRF = new DataverseRecordFile(title, recordLabel, url);
                     dRF.setOriginalTitle(title);
                 } else if (dataFile.has(PERSISTENT_ID) && !dataFile.getString(PERSISTENT_ID).equals("")) {
                     dbID = (int) dataFile.get("id");
                     String doi = dataFile.getString(PERSISTENT_ID);
-                    dRF = new DataverseRecordFile(title, doi, dataFile.getInt("id"), server, citationFields.getPID());
+                    dRF = new DataverseRecordFile(title, doi, dataFile.getInt("id"), server, recordLabel);
                     dRF.setFileURL(server + DV_FILE_ACCESS_PATH + dbID);
                     dRF.setOriginalTitle(title);
                 } else {
                     dbID = (int) dataFile.get("id");
-                    dRF = new DataverseRecordFile(title, citationFields.getPID(), dbID);
+                    dRF = new DataverseRecordFile(title, recordLabel, dbID);
                     dRF.setOriginalTitle(title);
                     dRF.setFileURL(server + DV_FILE_ACCESS_PATH + dbID);
                 }
                 SourceRecordFiles srf = SourceRecordFiles.getSourceRecords();
-                if (!dRF.getDatasetIdent().equals(""))
-                    srf.putRecord(dRF.getDatasetIdent(), dRF.translatedTitle, dRF);
-                else
-                    srf.putRecord(dRF.getDatasetIdent(), dRF.translatedTitle, dRF);
+                srf.putRecord(dRF.getDatasetIdent(), dRF.translatedTitle, dRF);
                 dataFiles.add(dRF);
             }catch (ClassCastException e){
                 logger.error("Something went wrong trying to parse the file metadata section for " + getPID() + " the json was " + fileFieldsArray.toString());
@@ -182,8 +176,9 @@ public class DataverseJavaObject extends SourceJavaObject {
 
     @Override
     public LinkedList<DataverseGeoRecordFile> downloadFiles() {
+        String recordLabel = getSimpleFieldVal(RECORD_LABEL);
         long startTime = Calendar.getInstance().getTimeInMillis();
-        String path = GeodisyStrings.replaceSlashes(DATA_DIR_LOC + urlized(GeodisyStrings.removeHTTPSAndReplaceAuthority(citationFields.getPID())));
+        String path = GeodisyStrings.replaceSlashes(DATA_DIR_LOC + recordLabel);
         File f = new File(path);
         try {
             deleteDir(f);
@@ -258,7 +253,7 @@ public class DataverseJavaObject extends SourceJavaObject {
             GDAL gdal = new GDAL();
             String dirPath = path + GeodisyStrings.replaceSlashes("/");
             dgrf = new DataverseGeoRecordFile(dRF);
-            GeographicBoundingBox gbb = gdal.generateBB(new File(dirPath+dRF.getTranslatedTitle()), getPID(),dRF.getGBBFileNumber());
+            GeographicBoundingBox gbb = gdal.generateBB(new File(dirPath+dRF.getTranslatedTitle()), recordLabel,dRF.getGBBFileNumber());
             dgrf.setGbb(gbb, gbb.getField(FILE_NAME));
             if(dgrf.hasValidBB()) {
                 dgrf.setTranslatedTitle(dgrf.gbb.getField(FILE_NAME));
@@ -390,7 +385,7 @@ public class DataverseJavaObject extends SourceJavaObject {
 
     @Override
     protected boolean createRecords(DataverseGeoRecordFile dgrf, int number, String type) {
-        String dirPath = GeodisyStrings.replaceSlashes(DATA_DIR_LOC + GeodisyStrings.removeHTTPSAndReplaceAuthority(dgrf.getDatasetIdent().replace("_","/")) + "/");
+        String dirPath = GeodisyStrings.replaceSlashes(DATA_DIR_LOC + dgrf.getDatasetIdent() + "/");
         String filePath = dirPath + dgrf.getTranslatedTitle();
         File fUpdate = new File(filePath);
         if(type.equals(VECTOR)) {
@@ -401,10 +396,6 @@ public class DataverseJavaObject extends SourceJavaObject {
             logger.error("Something went wrong parsing DataverseRecordFile: " + dgrf.getTranslatedTitle());
             return false;
         }
-    }
-
-    private String labelize(String simpleFieldVal) {
-        return simpleFieldVal.replace(".","_").replace("/","_").replace("\\\\","_").replace(":","");
     }
 
     @Override

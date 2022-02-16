@@ -6,12 +6,8 @@ package BaseFiles;/*
 
 
 
-import Dataverse.DataverseAPI;
-import Dataverse.SourceAPI;
 import Dataverse.SourceJavaObject;
-import DataSourceLocations.Dataverse;
 import GeoServer.GeoServerAPI;
-import java.util.LinkedList;
 import java.util.List;
 
 
@@ -23,40 +19,12 @@ import java.util.List;
  */
 public class Geodisy {
     /**
-     * Front side of middleware, this part harvests data from Dataverse
-     */
-
-    public List<SourceJavaObject> harvestDataverseMetadata() {
-        Dataverse dv = new Dataverse();
-        String[] dvs = dv.getDataLocationURLs();
-        LinkedList<SourceJavaObject> records = new LinkedList<>();
-        SourceAPI dVAPI;
-        for (String s : dvs) {
-            dVAPI = new DataverseAPI(s);
-            records = dVAPI.harvest(records);
-        }
-
-        return records;
-    }
-
-    /**
      * Harvesting metadata from FRDR Harvester
      * @return
      */
     public List<SourceJavaObject> harvestFRDRMetadata(){
         FRDRGeodisy frdrGeodisy = new FRDRGeodisy();
         return frdrGeodisy.harvestFRDRMetadata();
-    }
-
-
-    /** 
-     * Creates the universal part of the Dataverse BaseFiles.API search/retrieve
-     * URLs "://{database name}/api/". 
-     * Will still need to add http/http and whatever is needed at the end.
-     */
-    
-    private String createDataverseURL(String s) {
-        return "://" + s + "/api/";
     }
 
     /**

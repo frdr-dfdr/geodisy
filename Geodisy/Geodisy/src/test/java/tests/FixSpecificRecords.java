@@ -1,16 +1,9 @@
 package tests;
 
 import BaseFiles.HTTPCallerGeoNames;
-import BaseFiles.GeodisyTask;
 import Crosswalking.JSONParsing.DataverseParser;
-import Dataverse.DataverseAPI;
 import Dataverse.DataverseJavaObject;
-import Dataverse.SourceJavaObject;
 import org.json.JSONObject;
-import org.junit.jupiter.api.Test;
-
-import java.util.LinkedList;
-import java.util.List;
 
 //import static _Strings.GeodisyStrings.SANDBOX_DV_URL;
 

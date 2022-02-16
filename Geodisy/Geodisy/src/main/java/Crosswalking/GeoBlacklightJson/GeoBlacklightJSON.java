@@ -18,6 +18,7 @@ import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 
+import static _Strings.DVFieldNameStrings.RECORD_LABEL;
 import static _Strings.DVFieldNameStrings.TITLE;
 import static _Strings.GeodisyStrings.GEODISY_PATH_ROOT;
 
@@ -29,6 +30,7 @@ public abstract class GeoBlacklightJSON extends JSONCreator implements MetadataS
     protected String geoBlacklightJson;
     protected JSONObject jo;
     protected String doi;
+    protected String recordLabel;
     boolean download = false;
     GeoLogger logger;
     LinkedList<DataverseGeoRecordFile> geoFiles;
@@ -64,8 +66,7 @@ public abstract class GeoBlacklightJSON extends JSONCreator implements MetadataS
     }
 
     public void updateJSONs(){
-        String base = GeodisyStrings.replaceSlashes(GeodisyStrings.removeHTTPSAndReplaceAuthority(doi));
-        File file = new File(base);
+        File file = new File(recordLabel);
         File[] files = file.listFiles();
         for(File f: files){
             if(f.getName().equals("geoblacklight.json"))
@@ -85,7 +86,7 @@ public abstract class GeoBlacklightJSON extends JSONCreator implements MetadataS
         updateRequiredFields();
         updateOptionalFields();
         geoBlacklightJson = jo.toString();
-        saveJSONToFile(geoBlacklightJson, doi, file.getAbsolutePath());
+        saveJSONToFile(geoBlacklightJson, recordLabel, file.getAbsolutePath());
 
     }
 
@@ -97,15 +98,14 @@ public abstract class GeoBlacklightJSON extends JSONCreator implements MetadataS
         String slash = GeodisyStrings.replaceSlashes("/");
         if(!javaObject.getSimpleFields().getField(TITLE).isEmpty())
             if (!single)
-                saveJSONToFile(geoBlacklightJson, doi, GeodisyStrings.replaceSlashes(GeodisyStrings.removeHTTPSAndReplaceAuthority(doi)) + slash+drf.getBbCount());
+                saveJSONToFile(geoBlacklightJson, doi, recordLabel + slash+drf.getBbCount());
             else
-                saveJSONToFile(geoBlacklightJson, doi, GeodisyStrings.replaceSlashes(GeodisyStrings.removeHTTPSAndReplaceAuthority(doi)));
+                saveJSONToFile(geoBlacklightJson, doi, recordLabel);
     }
 
     public File genDirs(String doi, String localRepoPath) {
-        doi = FileWriter.fixPath(doi);
         localRepoPath = FileWriter.fixPath(localRepoPath);
-        File fileDir = new File(GeodisyStrings.replaceSlashes(GEODISY_PATH_ROOT +localRepoPath + GeodisyStrings.removeHTTPSAndReplaceAuthority(doi).replace(".","/")));
+        File fileDir = new File(GeodisyStrings.replaceSlashes(GEODISY_PATH_ROOT +localRepoPath + javaObject.getSimpleFieldVal(RECORD_LABEL)));
         if(!fileDir.exists())
             fileDir.mkdirs();
         return fileDir;

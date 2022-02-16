@@ -2,7 +2,6 @@ package Dataverse;
 
 import BaseFiles.GeoLogger;
 import Crosswalking.JSONParsing.DataverseParser;
-import _Strings.TestStrings;
 import org.json.JSONException;
 import org.json.JSONTokener;
 import org.json.JSONArray;
@@ -15,11 +14,12 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Calendar;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+import static _Strings.DVFieldNameStrings.RECORD_LABEL;
 import static _Strings.GeodisyStrings.*;
 
 
@@ -29,10 +29,15 @@ public class FRDRAPI extends SourceAPI{
     // Calls "callFRDRHarvester as prod version rather than testing version so that downloading of files
     // happens and geoserver is updated
     public LinkedList<SourceJavaObject> callFRDRHarvester(){
-        return callFRDRHarvester(false);
+        return callFRDRHarvester(false, "");
     }
 
-    public LinkedList<SourceJavaObject> callFRDRHarvester(boolean testing){
+    //For Testing
+    public LinkedList<SourceJavaObject> callFRDRHarvester(String json){
+        return callFRDRHarvester(true, json);
+    }
+    //Main method
+    public LinkedList<SourceJavaObject> callFRDRHarvester(boolean testing, String jsonString){
         boolean done = false;
         int counter = 0;
         LinkedList<SourceJavaObject> djos = new LinkedList<>();
@@ -40,16 +45,20 @@ public class FRDRAPI extends SourceAPI{
         // Repeatedly call the FRDR Harvester Export function until getting a json with finished: True
         while(!done) {
             String fullJSON;
-            //if(!testing)
+            if(!testing)
                 fullJSON = getJson();
-            /*else
-                fullJSON = "{\"records\": ["+ TestStrings.doiJson + "], \"finished\": true}";*/
+            else {
+                fullJSON = jsonString;
+            }
             if(fullJSON.isEmpty())
                 break;
             try {
                 JSONTokener tokener = new JSONTokener(fullJSON);
                 JSONObject json = new JSONObject(tokener);
-                done = (boolean) json.get("finished");
+                if(!testing)
+                    done = (boolean) json.get("finished");
+                else
+                    done = true;
                 JSONArray records = json.getJSONArray("records");
                 for (Object o : records) {
                     counter += 1;
@@ -59,11 +68,12 @@ public class FRDRAPI extends SourceAPI{
                     if (djo.hasGeoGraphicCoverage())
                         djo = (DataverseJavaObject) getBBFromGeonames(djo);
                     if (djo.hasContent && djo.isNewOrHasNewFiles() && !testing) {
-                        System.out.println("Downloading record: " + djo.getPID());
+                        String recordLabel = djo.getSimpleFieldVal(RECORD_LABEL);
+                        System.out.println("Downloading record: " + recordLabel);
                         long startTime = Calendar.getInstance().getTimeInMillis();
-                        if(!dontProcessSpecificRecords(djo.getPID())) {
+                        if(!dontProcessSpecificRecords(recordLabel)){
                             if(!testing) {
-                                System.out.println("Downloading record: " + djo.getPID());
+                                System.out.println("Downloading Files");
                                 djo.setGeoDataFiles(djo.downloadFiles());
                             }
                             if(djo.geoDataFiles.size()>0||djo.geoDataMeta.size()>0)
@@ -75,11 +85,11 @@ public class FRDRAPI extends SourceAPI{
                     if (djo.hasBoundingBox()) {
                         crosswalkRecord(djo);
                         ExistingDatasetBBoxes existingDatasetBBoxes = ExistingDatasetBBoxes.getExistingHarvests();
-                        existingDatasetBBoxes.addBBox(djo.getPID(),djo.getBoundingBox());
+                        existingDatasetBBoxes.addBBox(djo.getSimpleFieldVal(RECORD_LABEL),djo.getBoundingBox());
                         existingDatasetBBoxes.saveExistingSearchs(existingDatasetBBoxes.getbBoxes(), EXISTING_DATASET_BBOXES, "ExistingBBoxes");
                         djos.add(djo);
                     }
-                    int record_id = jo.getInt("id");
+                    String record_id = jo.getString("id");
 
                     if(!testing)
                         updateFRDRHarvesterDB(record_id);
@@ -91,7 +101,7 @@ public class FRDRAPI extends SourceAPI{
         return djos;
     }
 
-    public void updateFRDRHarvesterDB(int record_id) {
+    public void updateFRDRHarvesterDB(String record_id) {
         try {
             URL url = new URL(MARK_AS_PROCESSED + record_id);
             HttpURLConnection conn = (HttpURLConnection)url.openConnection();
@@ -101,10 +111,10 @@ public class FRDRAPI extends SourceAPI{
             conn.setDoInput(true);
             String json = "{\"geodisy_harvested\":1}";
             OutputStream os = conn.getOutputStream();
-            os.write(json.getBytes("UTF-8"));
+            os.write(json.getBytes(StandardCharsets.UTF_8));
             os.close();
             InputStream in = new BufferedInputStream(conn.getInputStream());
-            String result = org.apache.commons.io.IOUtils.toString(in, "UTF-8");
+            String result = org.apache.commons.io.IOUtils.toString(in, StandardCharsets.UTF_8);
 
 
             in.close();
@@ -145,21 +155,6 @@ public class FRDRAPI extends SourceAPI{
 
     //___________________________________________________________________________________________
     //No longer needed since metadata coming from FRDR Harvester
-
-    @Override
-    protected HashSet<String> searchDV() {
-        return null;
-    }
-
-    @Override
-    protected LinkedList<JSONObject> downloadMetadata(HashSet<String> dIOs) {
-        return null;
-    }
-
-    @Override
-    public LinkedList<SourceJavaObject> harvest(LinkedList<SourceJavaObject> answers) {
-        return null;
-    }
 
     @Override
     protected void deleteMetadata(String identifier) {

@@ -3,13 +3,14 @@ package TestFiles;
 public class Tests {
 
     public void runTests(){
-        GDALTest gt = new GDALTest();
-        gt.run();
+        TestJSONParse tjp = new TestJSONParse();
+        tjp.run();
+
+        /*GDALTest gt = new GDALTest();
+        gt.run();*/
         /*DatasetProcessTest t = new DatasetProcessTest();
         t.run();*/
 
-        /*RepoNameNormalizationTest r = new RepoNameNormalizationTest();
-        r.run();*/
         /*TestAddingDatasets t = new TestAddingDatasets();
         t.run();*/
 
@@ -53,9 +54,6 @@ public class Tests {
 
         //testCombine(args);
 
-        //Run the below solo to download
-        /*DownloadRecord downloadRecord = new DownloadRecord();
-        downloadRecord.run("doi:10.5072/FK2/KZRG9F");*/
 
         /*GDALTest gdalTest = new GDALTest();
         gdalTest.testUnzip();

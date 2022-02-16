@@ -4,9 +4,7 @@ import BaseFiles.GeoLogger;
 import BaseFiles.ProcessCall;
 import org.apache.solr.client.solrj.SolrServerException;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;

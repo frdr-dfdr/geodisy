@@ -55,7 +55,7 @@ public class ProcessCall {
             this.logger = logger;
         }
         @Override
-        public String[] call() throws FileNotFoundException, IOException  {
+        public String[] call() throws IOException  {
             processBuilder.command(args);
             Process p = processBuilder.start();
             StringBuilder result = new StringBuilder();

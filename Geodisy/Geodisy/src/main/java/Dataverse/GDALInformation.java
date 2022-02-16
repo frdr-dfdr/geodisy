@@ -57,7 +57,6 @@ public class GDALInformation {
                 }
             }
         }catch (IndexOutOfBoundsException e){
-            return;
         }
     }
 

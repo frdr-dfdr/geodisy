@@ -1,8 +1,6 @@
 package Dataverse.DataverseJSONFieldClasses;
 
-import Dataverse.DataverseJSONFieldClasses.Fields.DataverseJSONGeoFieldClasses.GeographicFields;
 import Dataverse.DataverseJavaObject;
-import Dataverse.FindingBoundingBoxes.LocationTypes.BoundingBox;
 import org.json.JSONObject;
 
 import java.util.List;

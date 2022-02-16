@@ -182,10 +182,10 @@ public class GeographicFields extends MetadataType {
         double temp2;
         for(GeographicBoundingBox b: geoBBoxes){
             temp = b.getNorthLatDub();
-            north = (temp>north) ? temp : north;
+            north = Math.max(temp, north);
 
             temp = b.getSouthLatDub();
-            south = (temp<south) ? temp : south;
+            south = Math.min(temp, south);
 
             temp = b.getEastLongDub();
             temp2 = b.getWestLongDub();
@@ -264,23 +264,22 @@ public class GeographicFields extends MetadataType {
         setFullBoundingBox();
     }
 
-    public void addBB(List<GeographicBoundingBox> bboxes, GeographicBoundingBox gBB) {
+    public void addBBForAntiMeridianCrossing(List<GeographicBoundingBox> bboxes, GeographicBoundingBox gBB) {
         double east = gBB.getEastLongDub();
         double west = gBB.getWestLongDub();
         double north = gBB.getNorthLatDub();
         double south = gBB.getSouthLatDub();
 
         if(east<west && east!=-181 && west!=181){
-            GeographicBoundingBox second = new GeographicBoundingBox(gBB.doi);
+            GeographicBoundingBox second = new GeographicBoundingBox(gBB.getField(GEOSERVER_LABEL));
             second.setNorthLatitude(String.valueOf(north));
             second.setSouthLatitude(String.valueOf(south));
             second.setWestLongitude(String.valueOf(west));
             second.setEastLongitude("180");
             bboxes.add(second);
             gBB.setWestLongitude("-180");
-            bboxes.add(gBB);
-        }else
-            bboxes.add(gBB);
+        }
+        bboxes.add(gBB);
         setGeoBBoxes(bboxes);
     }
 

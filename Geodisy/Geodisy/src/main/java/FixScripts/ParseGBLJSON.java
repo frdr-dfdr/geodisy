@@ -5,7 +5,6 @@ import org.json.JSONObject;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.regex.Pattern;
 
 public class ParseGBLJSON {
@@ -16,8 +15,7 @@ public class ParseGBLJSON {
     }
 
     JSONObject getJSONObject(String jsonString){
-        JSONObject json = new JSONObject(jsonString);
-        return json;
+        return new JSONObject(jsonString);
     }
 
     boolean isGeospatial(JSONObject json){
@@ -25,7 +23,7 @@ public class ParseGBLJSON {
         int slugLength = slug.length();
         boolean firstNumber = false;
         for(int i = slugLength-1; i>0; i--){
-            if(firstNumber && slug.substring(i,i+1).equals("v")||slug.substring(i,i+1).equals("r"))
+            if(firstNumber && slug.charAt(i) == 'v' || slug.charAt(i) == 'r')
                 return true;
             else if (firstNumber && !Pattern.matches("\\d",slug.substring(i,i+1)))
                 return false;

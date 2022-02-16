@@ -10,7 +10,6 @@ import static _Strings.DVFieldNameStrings.*;
 
 public class GeographicBoundingBox extends CompoundJSONField {
     private BoundingBox bb;
-    String doi;
     private String projection = "";
     private String fileName = "";
     private String geometryType = UNDETERMINED;
@@ -30,13 +29,13 @@ public class GeographicBoundingBox extends CompoundJSONField {
     String gdalString = "";
 
 
-    public GeographicBoundingBox(String doi) {
-        this.doi = doi;
+    public GeographicBoundingBox(String recordLabel) {
+        this.geoserverLabel = recordLabel;
         this.bb = new BoundingBox();
     }
 
-    public GeographicBoundingBox(String doi, BoundingBox bb){
-        this.doi = doi;
+    public GeographicBoundingBox(String recordLabel, BoundingBox bb){
+        this.geoserverLabel = recordLabel;
         this.bb = bb;
     }
 
@@ -78,7 +77,7 @@ public class GeographicBoundingBox extends CompoundJSONField {
         }else
             type = "m";
         answer = answer + type + fileNumber;
-        return GeodisyStrings.removeHTTPSAndReplaceAuthority(answer).replace(".","_").replace("/","_").replace("\\","_");
+        return answer.replace(".","_").replace("/","_").replace("\\","_");
     }
 
     public String getBaseGeoserverLocation(){
@@ -89,7 +88,7 @@ public class GeographicBoundingBox extends CompoundJSONField {
         else{
             String temp = geoserverLabel.substring(colon+1);
             temp = geoserverLabel.substring(0,colon) + temp;
-            GeodisyStrings.removeHTTPSAndReplaceAuthority(temp).replace(".","_").replace("/","_").replace("\\","_");
+            temp.replace(".","_").replace("/","_").replace("\\","_");
             answer = temp;
         }
         return answer;
@@ -281,7 +280,6 @@ public class GeographicBoundingBox extends CompoundJSONField {
 
 
     private void setGeoserverLabel(String value){
-
         geoserverLabel = value;
     }
 
@@ -329,20 +327,9 @@ public class GeographicBoundingBox extends CompoundJSONField {
     public void setIsGeneratedFromGeoFile(boolean generated){this.generated=generated;}
 
     public String getOpenGeoMetaLocation() {
-        return OPEN_GEO_METADATA_BASE+folderized(doi) + ISO_19139_XML;
+        return OPEN_GEO_METADATA_BASE+ geoserverLabel + GeodisyStrings.replaceSlashes("\\") + ISO_19139_XML;
     }
 
-    private String folderized(String doi) {
-        String answer = GeodisyStrings.removeHTTPSAndReplaceAuthority(doi);
-        answer = answer.replace(".","/");
-        int loc = answer.lastIndexOf("/");
-        if(loc==-1) {
-            logger.error("Something went wrong with creating a folder structure for the doi using doi: " + doi);
-            return "";
-        }
-        answer = answer.substring(0,loc+1);
-        return answer;
-    }
     public boolean hasBB(){
         return bb.hasBoundingBox();
     }
@@ -366,7 +353,7 @@ public class GeographicBoundingBox extends CompoundJSONField {
         return bb.getWidth();
     }
     private String getHeight() {
-        return bb.getWidth();
+        return bb.getHeight();
     }
 
     public void setWidthHeight(String gdalString) {

@@ -13,7 +13,6 @@ public class BoundingBox implements Serializable {
     private String fileName = "";
     private String geometryType = UNDETERMINED;
     private String geoserverLabel = "";
-    private String doi = "";
     private String width = "0";
     private String height = "0";
     private String place = "";
@@ -129,11 +128,11 @@ public class BoundingBox implements Serializable {
     }
 
     public double getLatNorthUncheck(){
-        return latNorth>latSouth? latNorth:latSouth;
+        return Math.max(latNorth, latSouth);
     }
 
     public double getLatSouthUnchecked(){
-        return latSouth<latNorth? latSouth:latNorth;
+        return Math.min(latSouth, latNorth);
     }
     public boolean isGenerated() {
         return generated;
@@ -153,20 +152,12 @@ public class BoundingBox implements Serializable {
         this.fileName = fileName;
     }
 
-    public String getGeometryType() {
-        return geometryType;
-    }
-
     public void setGeometryType(String geometryType) {
         this.geometryType = geometryType;
     }
 
-    public String getGeoserverLabel() {
-        return geoserverLabel;
-    }
-
     public void setGeoserverLabel(String s){
-        geoserverLabel = "geodisy:" + s;
+        geoserverLabel = s;
     }
 
 

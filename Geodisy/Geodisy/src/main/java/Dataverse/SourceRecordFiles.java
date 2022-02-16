@@ -1,5 +1,7 @@
 package Dataverse;
 
+import _Strings.GeodisyStrings;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -23,8 +25,8 @@ public class SourceRecordFiles {
         return files.get(doi+fileName);
     }
 
-    public void putRecord(String doi, String fileName, DataverseRecordFile drv){
-        files.put(doi+fileName,drv);
+    public void putRecord(String authAndUUID, String fileName, DataverseRecordFile drv){
+        files.put(authAndUUID+ GeodisyStrings.replaceSlashes("\\") + fileName,drv);
     }
 
     public Set<String> getKeys(){

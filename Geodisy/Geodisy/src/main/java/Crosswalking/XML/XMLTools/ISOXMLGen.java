@@ -7,11 +7,10 @@ import Crosswalking.XML.XMLGroups.IdentificationInfo;
 import Dataverse.DataverseJSONFieldClasses.Fields.CitationCompoundFields.*;
 import Dataverse.DataverseJSONFieldClasses.Fields.CitationSimpleJSONFields.SimpleCitationFields;
 import Dataverse.DataverseJavaObject;
+import _Strings.DVFieldNameStrings;
 import org.w3c.dom.Element;
 
-import java.nio.charset.Charset;
 import java.util.List;
-import java.util.UUID;
 
 import static _Strings.GeodisyStrings.CHARACTER;
 import static _Strings.GeodisyStrings.XML_NS;
@@ -77,21 +76,13 @@ public class ISOXMLGen extends DjoXMLGenerator {
         Element levelI = doc.createGMDElement("metadataIdentifier");
         Element levelJ = doc.createGMDElement("MD_Identifier");
         Element levelK = doc.createGMDElement("codeSpace");
-        UUID uuid = getUUID(djo.getPID());
-        Element levelL = doc.addGCOVal(uuid.toString(),CHARACTER);
+        Element levelL = doc.addGCOVal(djo.getSimpleFieldVal(RECORD_LABEL),CHARACTER);
         levelK.appendChild(levelL);
         levelJ.appendChild(levelK);
         levelI.appendChild(levelJ);
         rootElement.appendChild(levelI);
         rootElement = getParentMetadata(rootElement);
         return rootElement;
-    }
-
-    //getUUID also in DataverseRecordFile, so change there if changed here
-    private UUID getUUID(String name) {
-        byte[] bytes = name.getBytes(Charset.forName("UTF-8"));
-        return UUID.nameUUIDFromBytes(bytes);
-
     }
 
     //TODO create the second part of the Geodisy metadata for ISO
@@ -108,7 +99,7 @@ public class ISOXMLGen extends DjoXMLGenerator {
         XMLStack innerStack = new XMLStack();
         innerStack.push(levelL);
         innerStack.push(doc.createGMDElement(CODE));
-        levelL = innerStack.zip(doc.addGCOVal(djo.getPID(),CHARACTER));
+        levelL = innerStack.zip(doc.addGCOVal(djo.getSimpleFieldVal(RECORD_LABEL),CHARACTER));
         innerStack.push(levelL);
         innerStack.push(doc.createGMDElement(CODE));
         levelL = innerStack.zip(doc.addGCOVal(djo.getDOIProtocal(),CHARACTER));
@@ -133,10 +124,6 @@ public class ISOXMLGen extends DjoXMLGenerator {
         levelI.appendChild(levelJ);
         mdMetadata.appendChild(levelI);
         return mdMetadata;
-    }
-
-    private String xmlNSElement() {
-        return "xmlns";
     }
 
     private String xmlNSElement(String s) {
