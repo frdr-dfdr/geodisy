@@ -1,3 +1,15 @@
+
+********** **WARNING** **********
+
+THIS REPOSITORY IS NO LONGER MAINTAINED
+
+USE AT YOUR OWN RISK
+
+The functionality of Geodisy has been merged into [Lunaris](https://www.lunaris.ca/)
+
+********** **WARNING** **********
+
+
 # Geodisy
 #### The world of data at your fingertips
 
@@ -46,7 +58,7 @@ All of the software you need will be free and open source (FOSS). The Geodisy mi
 3. [Geoblacklight](https://geoblacklight.org) to allow users to search
 
 ### When will it be available?
-**Geodisy** is available now. See it in action at [geo.frdr.ca](https://geo.frdr.ca)
+**Geodisy** is available now.
 
 ### Where can I find documentation?
 **Geodisy** documentation is available in our [Github repository](https://github.com/ubc-library/geodisy/blob/master/Documentation/index.md)
@@ -81,7 +93,3 @@ Because **Geodisy** is an open source project, all of our software is freely ava
 ||Lee Wilson | Portage Network|
 
 
-### I want to know more!
-Look for us on [Twitter](https://twitter.com)! **#geodisy**
-
-We are happy to chat. Contact the **Geodisy** team at [geodisy.info@ubc.ca](https://researchdata.library.ubc.ca)
